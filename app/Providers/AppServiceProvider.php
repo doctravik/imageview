@@ -23,6 +23,18 @@ class AppServiceProvider extends ServiceProvider
             ], function($view) {
             $view->with('route', Route::currentRouteName());
         });
+
+        \DB::listen(function ($query) {
+            $sqlParts = explode('?', $query->sql);
+            $bindings = $query->connection->prepareBindings($query->bindings);
+            $pdo = $query->connection->getPdo();
+            $sql = array_shift($sqlParts);
+            foreach ($bindings as $i => $binding) {
+                $sql .= $pdo->quote($binding) . $sqlParts[$i];
+            }
+            
+            \Log::info($sql);
+        });
     }
 
     /**

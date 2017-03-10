@@ -15,4 +15,6 @@ Route::get('/', 'WelcomeController@index')->name('welcome.index');
 
 Route::get('/home', 'HomeController@index')->name('home.index');
 
+Route::post('/photo', 'PhotoController@store')->name('photo.store');
+
 Auth::routes();
