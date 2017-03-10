@@ -12,12 +12,24 @@
         </div>
     @endif
 
-    <form action="/photo" method="post" enctype="multipart/form-data">
+    <form class="upload" action="/photo" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
-        
-        <input type="file" name="photos[]" multiple>
 
+{{--         <label for="uploadPhoto" class="upload__label">
+            <span class="upload__header"><b>Drag files here or click to select files</b></span>
+        </label> --}}
+        <input type="file" name="photos[]" id="uploadPhoto" multiple>
         <button>Save photo</button>
     </form>
+
+    <hr>
+
+    <div class="columns">
+        @foreach($user->photos as $photo)
+            <div class="column is-3">
+                <img src="{{ $photo->url() }}" alt="photo">
+            </div>
+        @endforeach
+    </div>
 
 @endsection

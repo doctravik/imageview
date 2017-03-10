@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
@@ -53,5 +54,15 @@ class Photo extends Model
     public static function persist($photos)
     {
         DB::table('photos')->insert($photos);
+    }
+
+    /**
+     * Get url path to the file.
+     * 
+     * @return string
+     */
+    public function url()
+    {
+        return Storage::url($this->path);
     }
 }

@@ -22,8 +22,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index()
     {
-        return view('home.index');
+        $user = auth()->user()->load('photos');
+
+        return view('home.index', compact('user'));
     }
 }

@@ -1,0 +1,23 @@
+.upload__input {
+    display: none;
+}
+
+.upload__label {
+    background-color: whitesmoke;
+    color: #555;
+    display: block;
+    height: 200px;
+    border: 1px dashed #CCC;
+
+    &:hover {
+        color: crimson;
+        cursor: pointer;
+    }
+}
+
+.upload__header {
+    display: block;
+    margin: 100px 20px;
+    vertical-align: middle;
+    text-align: center;
+}
