@@ -16,5 +16,8 @@ Route::get('/', 'WelcomeController@index')->name('welcome.index');
 Route::get('/home', 'HomeController@index')->name('home.index');
 
 Route::post('/photo', 'PhotoController@store')->name('photo.store');
+Route::get('/photo/{photo}', 'PhotoController@show')->name('photo.show');
+
+Route::get('/imager/{path}', 'ImageController@show')->where('path', '[A-Za-z0-9\/\.\-\_]+')->name('image.show');
 
 Auth::routes();

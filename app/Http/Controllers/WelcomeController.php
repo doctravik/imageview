@@ -14,6 +14,8 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $users = User::with('photos')->get();
+
+        return view('welcome', compact('users'));
     }
 }
