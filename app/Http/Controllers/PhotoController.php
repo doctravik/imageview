@@ -33,6 +33,15 @@ class PhotoController extends Controller
      */
     public function show(Photo $photo)
     {
-        return view('photo.show', compact('photo'));
+        $photos = Photo::all();
+
+        $currentKey = $photos->search(function ($item, $key) use ($photo) {
+            return $item->id === $photo->id;
+        });
+
+        $next = $photos->get($currentKey + 1);
+        $prev = $photos->get($currentKey - 1);
+
+        return view('photo.show', compact('photo', 'next', 'prev'));
     }
 }

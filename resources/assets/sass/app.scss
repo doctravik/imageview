@@ -6,6 +6,8 @@
 @import "variables";
 
 @import "node_modules/bulma/css/bulma";
+@import "node_modules/font-awesome/scss/font-awesome";
 
 @import "layouts/index";
-@import "components/upload/index";
+@import "components/upload";
+@import "components/photo-view";

@@ -19,6 +19,6 @@ class ShowPhotoTest extends TestCase
 
         $response = $this->get("/photo/{$photo->id}");
 
-        $response->assertViewHas('photo');
+        $response->assertViewHas(['photo', 'next', 'prev']);
     }
 }
