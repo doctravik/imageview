@@ -2,60 +2,80 @@
 
 namespace App;
 
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Album;
+use App\Thumbnail;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
-    protected $fillable = ['name', 'description', 'link'];
-
+    protected $fillable = ['name', 'description', 'link', 'path'];
 
     /**
-     * Photo belongs to user.
+     * Photo belongs to Album.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function album()
     {
-        return $this->belongsTo(User::class);        
+        return $this->belongsTo(Album::class);
+    }
+
+    /**
+     * Photo has many thumbnails.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function thumbnails()
+    {
+        return $this->hasMany(Thumbnail::class);    
     }
 
     /**
      * Upload photos.
      * 
-     * @param  array $files
-     * @return void
+     * @param  UploadedFile $file
+     * @param  Album $album
+     * @return $this
      */
-    public static function upload($files)
+    public static function upload(UploadedFile $file, Album $album = null)
     {
-        $photos = array_reduce($files, function($carry, $file) {
-            $carry[] = [
-                'path'        => $file->store('images'),
-                'user_id'     => auth()->user()->id,
-                'created_at'  => Carbon::now(),
-                'updated_at'  => Carbon::now()
-            ];
+        $filename = sha1(time()) . '.' . $file->getClientOriginalExtension();
 
-            return $carry;
-        }, []);
+        $path = $file->storeAs('images', $filename);
 
-        static::persist($photos);
+        $photo = static::createFromPath($path);
+
+        return $album ? $album->addPhoto($photo) : $photo->create($photo->toArray());
     }
 
     /**
-     * Persist photos in the database.
+     * Create a new Photo instance from the given path.
      * 
-     * @param  array $photos
-     * @return void
+     * @param  string $path
+     * @return static
      */
-    public static function persist($photos)
+    public static function createFromPath($path)
     {
-        DB::table('photos')->insert($photos);
+        $photo = new static;
+        $photo->path = $path;
+        $photo->name = pathinfo($path, PATHINFO_BASENAME);
+
+        return $photo;
     }
 
+    /**
+     * Create all photos in one query.
+     * 
+     * @param  array $attributes
+     * @return boolean
+     */
+    public static function createAll($attributes)
+    {
+        return \DB::table('photos')->insert($attributes);
+    }
+    
     /**
      * Get url path to the file.
      * 

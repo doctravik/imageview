@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('route', Route::currentRouteName());
         });
 
-        \App\Photo::observe(\App\Observers\PhotoObserver::class);
 
         \DB::listen(function ($query) {
             $sqlParts = explode('?', $query->sql);

@@ -24,8 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = auth()->user()->load('photos');
+        $album = auth()->user()->albums()->first();
 
-        return view('home.index', compact('user'));
+        $album = $album ? $album->load('photos') : []; 
+
+        return view('home.index', compact('album'));
     }
 }

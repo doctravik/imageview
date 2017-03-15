@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -24,9 +26,31 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Photo::class, function (Faker\Generator $faker) {
+    $path = '/images/' . sha1(time()) . '.jpg';
 
     return [
-        'path' => '/images/image.jpg',
+        'name' => pathinfo($path, PATHINFO_BASENAME),
+        'path' => $path,
+        'album_id' => factory(App\Album::class)->create()->id
+    ];
+});
+
+$factory->define(App\Album::class, function (Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->unique()->word,
         'user_id' => factory(App\User::class)->create()->id
+    ];
+});
+
+$factory->define(App\Thumbnail::class, function (Faker\Generator $faker) {
+    $path = '/images/' . sha1(time()) . '.jpg';
+
+    return [
+        'name' => pathinfo($path, PATHINFO_BASENAME),
+        'path' => $path,
+        'width' => 400,
+        'height' => 400,
+        'photo_id' => factory(App\Photo::class)->create()->id
     ];
 });

@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="columns is-multiline">
-        @foreach($users as $user)
+        @foreach($albums as $album)
             <div class="column is-6">
-                @include('user.front.album')
+                @include('album.section')
             </div>
         @endforeach
     </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Photo;
+use App\Thumbnail;
+use App\PhotoToThumbnail;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePhotoRequest;
 
@@ -21,7 +23,15 @@ class PhotoController extends Controller
      */
     public function store(StorePhotoRequest $request)
     {
-        Photo::upload(request('photos'));
+        $thumbnails = [];
+
+        foreach (request('photos') as $file) {
+            $photo = Photo::upload($file, request()->user()->getFirstAlbum());
+            $thumbnail = Thumbnail::make($photo);
+            $thumbnails[] = $thumbnail->toArray();
+        }
+
+        Thumbnail::createAll($thumbnails);
 
         return back();
     }

@@ -12,20 +12,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
+        $this->removeOldUsers();
 
-        $this->removeExistingUsers();
-        
-        factory(App\User::class, 5)->create()->each(function ($user) use ($faker) {
-            for($i = 0; $i < 6; $i++) {
-                $image = $faker->image(public_path('storage/images'), 1280, 1280);
-
-                (new App\Photo)::create([
-                    'path' => 'images/'  . basename($image),
-                    'user_id' => $user->id
-                ]);
-            }
-        });
+        factory(App\User::class, 5)->create();
     }
 
     /**
@@ -33,7 +22,7 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      */
-    protected function removeExistingUsers()
+    protected function removeOldUsers()
     {
         \DB::table('users')->delete();
     }

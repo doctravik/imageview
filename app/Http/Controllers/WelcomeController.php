@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Album;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
@@ -14,8 +14,8 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $users = User::with('photos')->get();
+        $albums = Album::with('photos')->get();
 
-        return view('welcome', compact('users'));
+        return view('welcome', compact('albums'));
     }
 }

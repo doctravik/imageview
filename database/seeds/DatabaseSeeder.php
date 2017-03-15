@@ -11,8 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(PhotosTableSeeder::class);
+        File::cleanDirectory(public_path('storage/images'));
+
         $this->call(UsersTableSeeder::class);
+        $this->call(AlbumsTableSeeder::class);
+        $this->call(PhotosTableSeeder::class);
+        $this->call(ThumbnailsTableSeeder::class);
     }
 
 

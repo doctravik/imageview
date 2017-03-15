@@ -24,12 +24,14 @@
 
     <hr>
 
-    <div class="columns">
-        @foreach($user->photos as $photo)
-            <div class="column is-3">
-                <img src="{{ $photo->url() }}" alt="photo">
-            </div>
-        @endforeach
-    </div>
+    @if(count($album))
+        <div class="columns">
+            @foreach($album->photos as $photo)
+                <div class="column is-3">
+                    <img src="{{ $photo->url() }}" alt="photo">
+                </div>
+            @endforeach
+        </div>
+    @endif
 
 @endsection

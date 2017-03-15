@@ -4,6 +4,7 @@ namespace Tests\Feature\Photo;
 
 use App\User;
 use App\Photo;
+use App\Thumbnail;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -21,9 +22,7 @@ class UploadPhotoTest extends TestCase
     {
         parent::setUp();
 
-        Storage::fake('album');
-        $this->storage = Storage::disk('album');
-        config(['filesystems.default' => 'album']);
+        $this->storage = $this->fakeStorage();
     }
 
     /** @test */
@@ -42,8 +41,12 @@ class UploadPhotoTest extends TestCase
 
         $response->assertStatus(302);
         $this->assertCount(2, $photos = Photo::all());
+        $this->assertCount(2, $thumbnails = Thumbnail::all());
         $photos->each(function($photo) {
             $this->storage->assertExists($photo->path);
+        });
+        $thumbnails->each(function($thumbnail) {
+            $this->storage->assertExists($thumbnail->path);
         });
     }
 
