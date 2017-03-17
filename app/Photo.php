@@ -41,7 +41,7 @@ class Photo extends Model
      */
     public static function upload(UploadedFile $file, Album $album = null)
     {
-        $filename = sha1(time()) . '.' . $file->getClientOriginalExtension();
+        $filename = sha1(time() . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
 
         $path = $file->storeAs('images', $filename);
 

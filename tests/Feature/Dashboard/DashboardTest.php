@@ -20,7 +20,7 @@ class DashboardTest extends TestCase
         $response = $this->actingAs($user)->get('/home');
 
         $response->assertStatus(200);
-        $response->assertViewHas('album');
+        $response->assertViewHas('albums');
     }
 
     /** @test */

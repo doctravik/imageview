@@ -123,4 +123,14 @@ class Thumbnail extends Model
 
         return $thumbnail;
     }
+
+    /**
+     * Get url path to the file.
+     * 
+     * @return string
+     */
+    public function url()
+    {
+        return Storage::url($this->path);
+    }
 }

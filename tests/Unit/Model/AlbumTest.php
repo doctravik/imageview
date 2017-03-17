@@ -34,4 +34,12 @@ class AlbumTest extends TestCase
 
         $this->assertEquals($photo->album_id, $album->id);
     }
+
+    /** @test */
+    public function it_can_get_url_for_album()
+    {
+        $album = factory(Album::class)->create();
+
+        $this->assertEquals(url("/admin/albums/{$album->slug}"), $album->url());
+    }
 }

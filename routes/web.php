@@ -18,4 +18,8 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 Route::post('/photo', 'PhotoController@store')->name('photo.store');
 Route::get('/photo/{photo}', 'PhotoController@show')->name('photo.show');
 
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
+    Route::resource('albums', 'AlbumController');
+});
+
 Auth::routes();

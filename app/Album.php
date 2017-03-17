@@ -11,6 +11,26 @@ class Album extends Model
     protected $fillable = ['name', 'user_id'];
 
     /**
+    * Get the route key for the model.
+    *
+    * @return string
+    */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Get url.
+     * 
+     * @return string
+     */
+    public function url()
+    {
+        return url('/admin/albums/' . $this->slug);
+    }
+
+    /**
      * Album belongs to User.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -28,6 +48,16 @@ class Album extends Model
     public function photos()
     {
         return $this->hasMany(Photo::class);    
+    }
+
+    /**
+     * Album has many thumbnails through photos.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function thumbnails()
+    {
+        return $this->hasManyThrough(Thumbnail::class, Photo::class);
     }
 
     /**

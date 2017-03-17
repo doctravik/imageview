@@ -24,13 +24,15 @@
 
     <hr>
 
-    @if(count($album))
+    @if(count($albums))
         <div class="columns">
-            @foreach($album->photos as $photo)
-                <div class="column is-3">
-                    <img src="{{ $photo->url() }}" alt="photo">
-                </div>
-            @endforeach
+            <div class="column is-6 is-offset-3">
+                @foreach($albums as $album)
+                    <ul>
+                        <li><a href="">{{ $album->name }}</a></li>
+                    </ul>
+                @endforeach
+            </div>
         </div>
     @endif
 
