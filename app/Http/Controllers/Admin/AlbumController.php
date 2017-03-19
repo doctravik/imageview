@@ -52,6 +52,8 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
+        $this->authorize('delete', $album);
+        
         $album->delete();
 
         return redirect('/admin/albums');

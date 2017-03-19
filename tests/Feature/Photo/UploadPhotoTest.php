@@ -19,10 +19,10 @@ class UploadPhotoTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_can_upload_photos()
+    public function authorized_user_can_upload_photos()
     {
         $user = factory(User::class)->create();
-        $album = factory(Album::class)->create();
+        $album = factory(Album::class)->create(['user_id' => $user->id]);
 
         $photos = [
             UploadedFile::fake()->image('photo1.jpg', 900, 600),
@@ -56,11 +56,26 @@ class UploadPhotoTest extends TestCase
             UploadedFile::fake()->image('photo2.png')
         ];
 
-        $response = $this->post('/admin/albums/{$album->slug}/photos', [
+        $response = $this->post("/admin/albums/{$album->slug}/photos", [
             'photos' => $photos
         ]);
 
         $response->assertRedirect('/login');
+        $this->assertCount(0, $photos = Photo::all());
+        $this->assertCount(0, $this->storage->allFiles());
+    }
+
+    /** @test */
+    public function unauthorized_user_can_not_upload_photo()
+    {
+        $unauthorizedUser = factory(User::class)->create();
+        $album = factory(Album::class)->create();
+
+        $response = $this->actingAs($unauthorizedUser)->post("/admin/albums/{$album->slug}/photos", [
+            'photos' => [UploadedFile::fake()->image('photo1.jpg')]
+        ]);
+
+        $response->assertStatus(403);
         $this->assertCount(0, $photos = Photo::all());
         $this->assertCount(0, $this->storage->allFiles());
     }

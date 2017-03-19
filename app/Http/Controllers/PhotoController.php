@@ -10,11 +10,6 @@ use App\Http\Requests\StorePhotoRequest;
 
 class PhotoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->only('store');
-    }
-
     /**
      * Show photo.
      * 

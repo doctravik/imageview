@@ -13,9 +13,9 @@ class PhotoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth');    
     }
-    
+
     /**
      * Store photo in database.
      *  
@@ -24,6 +24,8 @@ class PhotoController extends Controller
      */
     public function store(StorePhotoRequest $request, Album $album)
     {
+        $this->authorize('store', [Photo::class, $album]);
+
         $thumbnails = [];
 
         foreach (request('photos') as $file) {

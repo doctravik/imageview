@@ -25,10 +25,22 @@ class DeleteAlbumTest extends TestCase
     }
 
     /** @test */
-    public function it_can_delete_album()
+    public function unauthorized_user_can_not_delete_album()
+    {
+        $unauthorizedUser = factory(User::class)->create();
+        $album = factory(Album::class)->create();
+
+        $response = $this->actingAs($unauthorizedUser)->delete("/admin/albums/{$album->slug}");
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('albums', $album->toArray());
+    }
+
+    /** @test */
+    public function authorized_user_can_delete_album()
     {
         $user = factory(User::class)->create();
-        $album = factory(Album::class)->create(['name' => 'project']);
+        $album = factory(Album::class)->create(['name' => 'project', 'user_id' => $user->id]);
 
         $response = $this->actingAs($user)->delete("/admin/albums/{$album->slug}");
 
