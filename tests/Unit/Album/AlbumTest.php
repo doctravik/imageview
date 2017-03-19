@@ -40,6 +40,6 @@ class AlbumTest extends TestCase
     {
         $album = factory(Album::class)->create();
 
-        $this->assertEquals(url("/admin/albums/{$album->slug}"), $album->url());
+        $this->assertEquals(url("/albums/{$album->slug}"), $album->url());
     }
 }

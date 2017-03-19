@@ -17,7 +17,7 @@
                 <a href="{{ url('/login') }}" 
                     class="nav-item {{ $route == 'login' ? 'is-active' : '' }}">Login</a>
             @else
-                <span class="nav-item">{{ Auth::user()->name }}</span>
+                <a class="nav-item" href="/home">{{ Auth::user()->name }}</a>
                 <a class="nav-item" href="{{ url('/logout') }}" 
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">logout</a>
 

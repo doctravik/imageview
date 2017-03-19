@@ -3,6 +3,7 @@
 namespace Tests\Feature\Photo;
 
 use App\User;
+use App\Album;
 use App\Photo;
 use App\Thumbnail;
 use Tests\TestCase;
@@ -21,13 +22,14 @@ class UploadPhotoTest extends TestCase
     public function it_can_upload_photos()
     {
         $user = factory(User::class)->create();
+        $album = factory(Album::class)->create();
 
         $photos = [
             UploadedFile::fake()->image('photo1.jpg', 900, 600),
             UploadedFile::fake()->image('photo2.png', 900, 600)
         ];
 
-        $response = $this->actingAs($user)->post('/photo', [
+        $response = $this->actingAs($user)->post("/admin/albums/{$album->slug}/photos", [
             'photos' => $photos
         ]);
 
@@ -47,12 +49,14 @@ class UploadPhotoTest extends TestCase
     /** @test */
     public function unauthenticated_user_can_not_upload_photo()
     {
+        $album = factory(Album::class)->create();
+        
         $photos = [
             UploadedFile::fake()->image('photo1.jpg'),
             UploadedFile::fake()->image('photo2.png')
         ];
 
-        $response = $this->post('/photo', [
+        $response = $this->post('/admin/albums/{$album->slug}/photos', [
             'photos' => $photos
         ]);
 

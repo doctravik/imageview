@@ -16,31 +16,14 @@ class PhotoController extends Controller
     }
 
     /**
-     * Store photo in database.
-     *  
-     * @param  StorePhotoRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePhotoRequest $request)
-    {
-        $thumbnails = [];
-
-        foreach (request('photos') as $file) {
-            $photo = Photo::upload($file, request()->user()->getFirstAlbum());
-            $thumbnail = Thumbnail::make($photo->path)->resize()->save();
-        }
-
-        return back();
-    }
-
-    /**
      * Show photo.
+     * 
      * @param  Photo  $photo
      * @return \Illuminate\Http\Response
      */
     public function show(Photo $photo)
     {
-        $photos = Photo::all();
+        $photos = $photo->album->photos;
 
         $currentKey = $photos->search(function ($item, $key) use ($photo) {
             return $item->id === $photo->id;

@@ -1,42 +1,32 @@
 @extends('layouts.app')
 @section('title', 'View albums')
 @section('content')
-    @if(count($albums))
-        <div class="columns">
-            <div class="column is-6">
-                @foreach($albums as $album)
-                    <div class="media">
-                        <div class="media-content"><p><a href="{{ $album->url() }}">{{ $album->name }}</a></p></div>
-                        <div class="media-right has-text-right">
-                            <form class="control" action="{{ $album->url() }}" method="POST">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                                <button class="button info">delete</button>
-                            </form>
+    <div class="columns">
+        @if(count($albums))
+            <div class="column is-8">
+                <nav class="panel">
+                    <p class="panel-heading">Albums</p>
+                    @foreach($albums as $album) 
+                        <div class="panel-block">
+                            <div class="control level columns">
+                                <div class="column">
+                                    <p><a href="{{ $album->url() }}">{{ $album->name }}</a></p>
+                                </div>
+                                <div class="column has-text-right">
+                                    <form action="{{ route('admin.album.destroy', $album->slug) }}" method="POST">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button class="button info">delete</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </nav>
             </div>
-            <div class="column is-1"></div>
-            <div class="column is-5">
-                <form action="{{ url('/admin/albums') }}" method="POST" class="control notification box">
-                    {{ csrf_field() }}
-                    <div class="field">
-                        <label class="label">Name</label>
-                        <p class="control">
-                            <input class="input" name="name" type="text" placeholder="Name" value="{{ old('name') }}">
-                        </p>
-                        @if($errors->has('name'))
-                            <p class="help is-danger">{{ $errors->first('name') }}</p>
-                        @endif
-                    </div>
-                    <div class="field">
-                        <p class="control">
-                            <button class="button is-primary">Create album</button>
-                        </p>
-                    </div>
-                </form>
-            </div>
+        @endif
+        <div class="column is-4">
+            @include('album.admin.partials.create')
         </div>
-    @endif
+    </div>
 @endsection

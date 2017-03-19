@@ -37,38 +37,4 @@ class InteractWithAlbumTest extends TestCase
 
         $this->assertTrue($user->fresh()->hasAlbums());                
     }
-
-    /** @test */
-    public function it_can_get_first_album_if_it_exists()
-    {
-        $album = factory(Album::class)->create();
-        $user = $album->user()->get()->first();
-
-        $this->assertEquals($album->id, $user->getFirstAlbum()->id);
-        $this->assertCount(1, $user->albums);
-    }
-    
-    /** @test */
-    public function it_can_create_new_album_on_request()
-    {
-        $user = factory(User::class)->create();
-
-        $album = $user->createAlbum('new album');
-
-        $this->assertTrue($album instanceof Album);
-        $this->assertCount(1, Album::all());
-        $this->assertDatabaseHas('albums', ['name' => 'new album']);
-    }
-
-    /** @test */
-    public function it_can_get_first_album_if_it_doesnt_exists()
-    {
-        $user = factory(User::class)->create();
-
-        $album = $user->getFirstAlbum();
-
-        $this->assertTrue($album instanceof Album);
-        $this->assertCount(1, Album::all());
-        $this->assertDatabaseHas('albums', ['name' => str_slug($user->email)]);
-    }
 }

@@ -38,7 +38,7 @@ class ViewAlbumsTest extends TestCase
         $album = factory(Album::class)->create();
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user)->get("/admin/albums/{$album->slug}");
+        $response = $this->actingAs($user)->get("/albums/{$album->slug}");
 
         $response->assertStatus(200);
         $response->assertViewHas('album');
@@ -46,12 +46,14 @@ class ViewAlbumsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_user_cannot_see_single_album()
+    public function unauthenticated_user_can_see_single_album()
     {
         $album = factory(Album::class)->create();
 
-        $response = $this->get("/admin/albums/{$album->slug}");
+        $response = $this->get("/albums/{$album->slug}");
 
-        $response->assertRedirect('/login');
+        $response->assertStatus(200);
+        $response->assertViewHas('album');
+        $response->assertSee($album->name);
     }
 }

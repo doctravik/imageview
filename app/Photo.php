@@ -16,6 +16,16 @@ class Photo extends Model
     protected $fillable = ['name', 'description', 'link', 'path'];
 
     /**
+    * Get the route key for the model.
+    *
+    * @return string
+    */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    
+    /**
      * Photo belongs to Album.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

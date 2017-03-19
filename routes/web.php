@@ -13,13 +13,19 @@
 
 Route::get('/', 'WelcomeController@index')->name('welcome.index');
 
-Route::get('/home', 'HomeController@index')->name('home.index');
+Route::post('/photos', 'PhotoController@store')->name('photos.store');
+Route::get('/photos/{photo}', 'PhotoController@show')->name('photos.show');
 
-Route::post('/photo', 'PhotoController@store')->name('photo.store');
-Route::get('/photo/{photo}', 'PhotoController@show')->name('photo.show');
+Route::get('/albums/{album}', 'AlbumController@show')->name('albums.show');
+
+Route::get('/home', 'Admin\AlbumController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
-    Route::resource('albums', 'AlbumController');
+    Route::get('/albums', 'AlbumController@index')->name('admin.album.index');
+    Route::post('/albums', 'AlbumController@store')->name('admin.album.store');
+    Route::delete('/albums/{album}', 'AlbumController@destroy')->name('admin.album.destroy');
+    
+    Route::post('/albums/{album}/photos', 'PhotoController@store')->name('albums.photos.store');
 });
 
 Auth::routes();

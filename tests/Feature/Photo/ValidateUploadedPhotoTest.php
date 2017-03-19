@@ -3,6 +3,7 @@
 namespace Tests\Feature\Photo;
 
 use App\User;
+use App\Album;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -20,12 +21,14 @@ class ValidateUploadedPhotoTest extends TestCase
 
         $user = factory(User::class)->create();
         $this->actingAs($user);
+        $album = factory(Album::class)->create();
+        $this->url = "/admin/albums/{$album->slug}/photos";
     }
 
     /** @test */
     public function it_cannot_validate_request_without_photos()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => null
         ]);
 
@@ -37,7 +40,7 @@ class ValidateUploadedPhotoTest extends TestCase
     /** @test */
     public function it_cannot_validate_request_if_photos_is_empty()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => []
         ]);
 
@@ -49,7 +52,7 @@ class ValidateUploadedPhotoTest extends TestCase
     /** @test */
     public function it_cannot_validate_request_if_photos_is_not_array()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => 'photos'
         ]);
 
@@ -61,7 +64,7 @@ class ValidateUploadedPhotoTest extends TestCase
     /** @test */
     public function it_cannot_validate_request_if_photo_is_not_image()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => [UploadedFile::fake()->create('document.pdf')]
         ]);
 
@@ -73,7 +76,7 @@ class ValidateUploadedPhotoTest extends TestCase
     /** @test */
     public function it_cannot_validate_request_if_photo_is_more_than_2MB()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => [UploadedFile::fake()->image('image.png')->size(2001)]
         ]);
 
@@ -85,7 +88,7 @@ class ValidateUploadedPhotoTest extends TestCase
     /** @test */
     public function it_cannot_validate_request_if_one_file_is_invalid()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => [
                 UploadedFile::fake()->image('image.JPG'),
                 UploadedFile::fake()->image('image.png')->size(2001)
@@ -100,7 +103,7 @@ class ValidateUploadedPhotoTest extends TestCase
     /** @test */
     public function it_cannot_validate_request_if_number_of_photos_is_more_than_5()
     {
-        $response = $this->from('/home')->post('/photo', [
+        $response = $this->from('/home')->post($this->url, [
             'photos' => [
                 UploadedFile::fake()->image('image1.jpg'),
                 UploadedFile::fake()->image('image2.jpg'),

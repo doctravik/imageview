@@ -17,7 +17,7 @@ class ShowPhotoTest extends TestCase
     {
         $photo = factory(Photo::class)->create();
 
-        $response = $this->get("/photo/{$photo->id}");
+        $response = $this->get("/photos/{$photo->slug}");
 
         $response->assertViewHas(['photo', 'next', 'prev']);
     }

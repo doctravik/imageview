@@ -49,28 +49,4 @@ trait InteractWithAlbum
     {
         return (bool) $this->albums->count();
     }
-
-    /**
-     * Get first random album.
-     *
-     * @return Album
-     */
-    public function getFirstAlbum()
-    {
-        return (!$this->hasAlbums()) ? $this->createAlbum() : $this->albums->first();
-    }
-
-    /**
-     * Create user album.
-     *
-     * @param null|string $name
-     * @return Album
-     */
-    public function createAlbum($name = null)
-    {
-        $album = new Album;
-        $album->name = $name ?? str_slug($this->email);
-
-        return $this->addAlbum($album);
-    }
 }
