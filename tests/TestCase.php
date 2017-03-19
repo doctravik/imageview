@@ -9,6 +9,15 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    protected $storage;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->storage = $this->fakeStorage();    
+    }
+
     /**
      * Set fake previous url.
      * 

@@ -15,7 +15,6 @@ class ObserverServiceProvider extends ServiceProvider
     {
         \App\Photo::observe(\App\Observers\PhotoObserver::class);
         \App\Album::observe(\App\Observers\AlbumObserver::class);
-        \App\Thumbnail::observe(\App\Observers\ThumbnailObserver::class);
     }
 
     /**

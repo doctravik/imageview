@@ -1,6 +1,7 @@
 <?php
 
 use App\Photo;
+use App\Thumbnail;
 use Illuminate\Database\Seeder;
 
 class PhotosTableSeeder extends Seeder
@@ -18,7 +19,8 @@ class PhotosTableSeeder extends Seeder
             for($i = 0; $i < 5; $i++) {
                 $image = $faker->image(public_path('storage/images'), 1280, 900);
 
-                $album->addPhoto(Photo::createFromPath('images/'  . basename($image)));
+                $photo = $album->addPhoto(Photo::createFromPath('images/'  . basename($image)));
+                Thumbnail::make($photo->path)->resize()->save();
             }
         });
     }

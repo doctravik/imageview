@@ -5,7 +5,7 @@
     <div class="columns is-multiline">
         @foreach($photos as $photo)
             <div class="column is-4 has-text-centered">
-                <a href="{{ $photo->origin() }}">
+                <a href="{{ $photo->url() }}">
                     <img src="{{ $photo->small() }}" alt="{{ $album->name }} photo">
                 </a>
             </div>

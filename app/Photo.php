@@ -4,12 +4,15 @@ namespace App;
 
 use App\Album;
 use App\Thumbnail;
+use App\Image\UrlHelper;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
+    use UrlHelper;
+    
     protected $fillable = ['name', 'description', 'link', 'path'];
 
     /**
@@ -63,26 +66,5 @@ class Photo extends Model
         $photo->name = pathinfo($path, PATHINFO_BASENAME);
 
         return $photo;
-    }
-
-    /**
-     * Create all photos in one query.
-     * 
-     * @param  array $attributes
-     * @return boolean
-     */
-    public static function createAll($attributes)
-    {
-        return \DB::table('photos')->insert($attributes);
-    }
-    
-    /**
-     * Get url path to the file.
-     * 
-     * @return string
-     */
-    public function url()
-    {
-        return Storage::url($this->path);
     }
 }

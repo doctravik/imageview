@@ -46,7 +46,7 @@ class AlbumController extends Controller
 
     public function show(Album $album)
     {
-        return $photos = $album->photos()->with('thumbnails')->get();
+        $photos = $album->photos;
         
         return view('album.admin.show', compact('album', 'photos'));
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Album;
+namespace Tests\Feature\Album;
 
 use App\User;
 use App\Album;

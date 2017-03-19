@@ -2,7 +2,7 @@
     @foreach($album->photos as $photo)
         <div class="column is-6">
             <a href="{{ route('photo.show', ['id' => $photo->id]) }}">
-                <img src="{{ $photo->url() }}" alt="photo">
+                <img src="{{ $photo->small() }}" alt="photo">
             </a>
         </div>
     @endforeach

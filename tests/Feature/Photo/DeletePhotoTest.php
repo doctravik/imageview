@@ -4,6 +4,7 @@ namespace Tests\Feature\Photo;
 
 use App\User;
 use App\Photo;
+use App\Thumbnail;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -18,16 +19,18 @@ class DeletePhotoTest extends TestCase
     /** @test */
     public function it_can_delete_uploaded_image_when_photo_is_deleted()
     {
-        $storage = $this->fakeStorage();
         $this->actingAs(factory(User::class)->create());
-        Photo::upload(UploadedFile::fake()->image('photo1.jpg'));
+        $photo = Photo::upload(UploadedFile::fake()->image('photo1.jpg'));
+        $thumbnail = Thumbnail::make($photo->path)->resize()->save();
 
-        $this->assertNotNull(1, $photo = Photo::first());
-        $storage->assertExists($photo->path);
+        $this->assertNotNull($photo);
+        $this->assertNotNull($thumbnail);
+        $this->storage->assertExists($photo->path);
+        $this->storage->assertExists($thumbnail->getPath());
 
         $photo->delete();
         
         $this->assertCount(0, $photos = Photo::all());
-        $this->assertCount(0, $storage->allFiles());
+        $this->assertCount(0, $this->storage->allFiles());
     }
 }

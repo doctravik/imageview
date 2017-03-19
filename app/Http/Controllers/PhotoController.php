@@ -27,11 +27,8 @@ class PhotoController extends Controller
 
         foreach (request('photos') as $file) {
             $photo = Photo::upload($file, request()->user()->getFirstAlbum());
-            $thumbnail = Thumbnail::make($photo);
-            $thumbnails[] = $thumbnail->toArray();
+            $thumbnail = Thumbnail::make($photo->path)->resize()->save();
         }
-
-        Thumbnail::createAll($thumbnails);
 
         return back();
     }

@@ -15,11 +15,9 @@ class PhotoObserver
     public function deleting(Photo $photo)
     {
         Storage::delete($photo->path);
-
-        if($photo->thumbnails()->count() > 0) {
-            $photo->thumbnails->each(function($thumbnail) {
-                Storage::delete($thumbnail->path);                
-            });
-        }
+        
+        $photo->sizes()->each(function($value, $key) use ($photo){
+            Storage::delete($photo->path($key));
+        });
     }
 }

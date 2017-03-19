@@ -2,135 +2,184 @@
 
 namespace App;
 
-use App\Photo;
-use Carbon\Carbon;
-use Intervention\Image\Facades\Image;
-use Illuminate\Database\Eloquent\Model;
+use App\Image\UrlHelper;
+use App\Image\ImageHandler;
 use Illuminate\Support\Facades\Storage;
-use App\Traits\InteractWithInterventionImage;
 
-class Thumbnail extends Model
+class Thumbnail
 {
-    use InteractWithInterventionImage;
-
-    protected $fillable = ['name', 'path'];
+    use UrlHelper;
     
     /**
-     * Thumbnail belongs to Photo.
+     * Path to parent photo.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @var string
      */
-    public function photo()
+    protected $path;
+
+    /**
+     * Size of thumbnail.
+     * 
+     * @var string
+     */
+    protected $size;
+
+    /**
+     * Image handler.
+     * 
+     * @var App\Image\ImageHandler
+     */
+    protected $imageHandler;
+
+
+    public function __construct($path, $size = null)
     {
-        return $this->belongsTo(Photo::class);    
+        $this->path = $path;
+
+        $this->size = $size ?? 'small';
+
+        $this->imageHandler = resolve(ImageHandler::class);
     }
 
     /**
-     * Make Thumbnail from Photo.
+     * Make instance of Thumbnail.
      * 
-     * @param  Photo $photo
-     * @return static
+     * @param  string $path
+     * @param  string|null $size
+     * @return Thumbnail
      */
-    public static function make(Photo $photo)
+    public static function make($path, $size = null)
     {
-        $thumbnail = static::createFromPhoto($photo);
-
-        $thumbnail->copy($photo->path)->resize();
-
-        return $thumbnail->associateWith($photo);
+        return (new static($path, $size))->makeImage();
     }
 
     /**
-     * Copy file.
+     * Make image.
      * 
-     * @param  string $source
      * @return $this
      */
-    public function copy($source)
+    protected function makeImage()
     {
-        Storage::copy($source, $this->path);
+        $this->imageHandler->make(Storage::get($this->path));
 
         return $this;
     }
 
     /**
-     * Resize thumbnail image.
+     * Save thumbnail in the filesystem.
      * 
-     * @return boolean
-     */
-    public function resize()
-    {
-        $image = Image::make(Storage::get($this->path));
-
-        list($width, $height) = $this->getResizeParameters($image, $this->width, $this->height);
-
-        $image->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-
-        return Storage::put($this->path, (string) $image->encode());
-    }
-
-    /**
-     * Associate thumbnail with the photo.
-     * 
-     * @param  Photo $photo
      * @return $this
      */
-    public function associateWith(Photo $photo)
+    public function save()
     {
-        $this->photo_id = $photo->id;
+        Storage::put($this->path($this->size), (string) $this->image()->encode());
 
         return $this;
     }
 
     /**
-     * Create all thumbnails in one query.
+     * Resize thumbnail.
      * 
-     * @param  array $attributes
+     * @param  string|null $size
+     * @return $this
+     */
+    public function resize($size = null)
+    {
+        if($size) { 
+            $this->setSize($size);
+        }
+
+        list($width, $height) = $this->getResizeParameters();
+
+        $this->imageHandler->resize($width, $height);
+
+        return $this;
+    }
+
+    /**
+     * Get resize parameters
+     * 
+     * @return array
+     */
+    protected function getResizeParameters()
+    {
+        $parameter = $this->sizes()->get($this->size);
+
+        if($this->hasPortraitOrientation()) {
+            return [null, $parameter];
+        }
+
+        return [$parameter, null];
+    }
+
+    /**
+     * Check if thumbnail has a portrait orientation.
+     * 
      * @return boolean
      */
-    public static function createAll($attributes)
+    protected function hasPortraitOrientation()
     {
-        return \DB::table('thumbnails')->insert($attributes);
+        return $this->height() > $this->width();
     }
 
     /**
-     * Create a new Thumbnail instance from the given Photo.
+     * Set thumbnail size.
      * 
-     * @param  Photo $photo
-     * @param  integer $width
-     * @param  integer $height
-     * @return static
+     * @param string $size
+     * @return void
      */
-    public static function createFromPhoto(Photo $photo, $width = 400, $height = 400)
+    protected function setSize($size)
     {
-        $name = sprintf("%s_%sx%s.%s", 
-            pathinfo($photo->path, PATHINFO_FILENAME), 
-            $width, $height, 
-            pathinfo($photo->path, PATHINFO_EXTENSION)
-        );
-
-        $thumbnail = new static();
-        $thumbnail->name = $name;
-        $thumbnail->width = $width;
-        $thumbnail->height = $height;
-        $thumbnail->path = pathinfo($photo->path, PATHINFO_DIRNAME) . '/' . $name;
-        $thumbnail->slug  = str_slug(pathinfo($name, PATHINFO_FILENAME));
-        $thumbnail->created_at = Carbon::now();
-        $thumbnail->updated_at = Carbon::now();
-
-        return $thumbnail;
+        $this->size = $size;
     }
 
     /**
-     * Get url path to the file.
+     * Get path.
      * 
      * @return string
      */
-    public function url()
+    public function getPath()
     {
-        return Storage::url($this->path);
+        return $this->path;
+    }
+
+    /**
+     * Get imageHandler.
+     * 
+     * @return \App\Image\ImageHandler
+     */
+    public function getImageHandler()
+    {
+        return $this->imageHandler;
+    }
+
+    /**
+     * Get image.
+     * 
+     * @return mixed
+     */
+    public function image()
+    {
+        return $this->imageHandler->getImage();
+    }
+
+    /**
+     * Get thumbnail width.
+     * 
+     * @return integer
+     */
+    public function width()
+    {
+        return $this->getImageHandler()->width();
+    }
+
+    /**
+     * Get thumbnail height.
+     * 
+     * @return integer
+     */
+    public function height()
+    {
+        return $this->getImageHandler()->height();
     }
 }

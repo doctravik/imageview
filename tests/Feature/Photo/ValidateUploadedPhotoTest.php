@@ -12,6 +12,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ValidateUploadedPhotoTest extends TestCase
 {
+    use DatabaseTransactions;
+    
     public function setUp()
     {
         parent::setUp();

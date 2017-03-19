@@ -12,13 +12,15 @@ trait InteractWithInterventionImage
      * @param  integer $height
      * @return array
      */
-    private function getResizeParameters($image, $width, $height)
+    private function getResizeParameters($image, $size)
     {
+        $parameter = $this->sizes()[$size];
+
         if($this->hasPortraitOrientation($image)) {
-            return [null, $height];
+            return [null, $parameter];
         }
 
-        return [$width, null];
+        return [$parameter, null];
     }
 
     /**
@@ -30,5 +32,15 @@ trait InteractWithInterventionImage
     private function hasPortraitOrientation($image)
     {
         return $image->height() > $image->width();
+    }
+
+
+    private function sizes()
+    {
+        return [
+            'small' => 300,
+            'medium' => 600,
+            'large' => 800,
+        ];
     }
 }
