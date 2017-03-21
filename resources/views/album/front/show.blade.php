@@ -3,17 +3,21 @@
 @section('content')
     <h1>{{ $album->name }}</h1>
 
-    {{-- @can('') --}}
+    @can('store', [App\Photo::class, $album])
         @include('album.admin.partials.upload')
-    {{-- @endcan --}}
+    @endcan
 
-    <div class="columns is-multiline">
-        @foreach($photos as $photo)
-            <div class="column is-4 has-text-centered">
-                <a href="{{ route('photos.show', $photo->slug) }}">
-                    <img src="{{ $photo->small() }}" alt="{{ $album->name }} photo">
-                </a>
-            </div>
-        @endforeach
-    </div>
+    <photos :album="{{ $photos }}" inline-template>
+        <div class="columns is-multiline">
+            @foreach($photos as $photo)
+                <div class="column is-4">
+                    <photo 
+                        :photo="'{{ $photo->path }}'" 
+                        :thumbnail="'{{ $photo->small() }}'"
+                        v-on:show-modal="sendAlbum">   
+                    </photo>
+                </div>
+            @endforeach
+        </div>
+</photos>
 @endsection

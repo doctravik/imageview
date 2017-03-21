@@ -17,11 +17,14 @@
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'storage' => Storage::url('/')
         ]) !!};
     </script>
 </head>
 <body>
     <div id="app" class="site">
+        <modal></modal>
+
         @include('layouts.partials.nav')
 
         <section class="section flex-1">
