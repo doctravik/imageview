@@ -1,5 +1,5 @@
 <template>
-    <a @click.prevent="showImage">
+    <a @click.prevent="showModal">
         <img :src="thumbnail" alt="photo">
     </a>
 </template>
@@ -9,9 +9,8 @@
         props: ['photo', 'thumbnail'],
 
         methods: {
-            showImage() {
+            showModal() {
                 eventDispatcher.$emit('show-modal', this.photo);
-                this.$emit('show-modal');
             }
         }
     }

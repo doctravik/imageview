@@ -15,6 +15,7 @@ require('./bootstrap');
 Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('photo', require('./components/Photo.vue'));
 Vue.component('photos', require('./components/Photos.vue'));
+Vue.component('slider', require('./components/Slider.vue'));
 
 const app = new Vue({
     el: '#app',

@@ -1,0 +1,28 @@
+.slider {
+    display: none;
+    @media (min-width: 768px) {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.slider__item {
+    display: block;
+    background-color: #222;
+    background-size: cover;
+    margin: 1em;
+    padding: 36px;
+    position: relative;
+}
+
+.slider__item--active {
+    border: 2px solid yellow;
+}
+
+.slider__arrow {
+    font-size: 45px;
+    line-height: 1;
+    position: relative;
+    text-align: center;
+    width: 50px;
+}

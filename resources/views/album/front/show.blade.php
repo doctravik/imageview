@@ -7,17 +7,5 @@
         @include('album.admin.partials.upload')
     @endcan
 
-    <photos :album="{{ $photos }}" inline-template>
-        <div class="columns is-multiline">
-            @foreach($photos as $photo)
-                <div class="column is-4">
-                    <photo 
-                        :photo="'{{ $photo->path }}'" 
-                        :thumbnail="'{{ $photo->small() }}'"
-                        v-on:show-modal="sendAlbum">   
-                    </photo>
-                </div>
-            @endforeach
-        </div>
-</photos>
+    @include('album.front.partials.photos', ['column_width' => 4])
 @endsection
