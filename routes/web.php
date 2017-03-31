@@ -13,7 +13,6 @@
 
 Route::get('/', 'WelcomeController@index')->name('welcome.index');
 
-Route::post('/photos', 'PhotoController@store')->name('photos.store');
 Route::get('/photos/{photo}', 'PhotoController@show')->name('photos.show');
 
 Route::get('/albums/{album}', 'AlbumController@show')->name('albums.show');
@@ -26,6 +25,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     Route::delete('/albums/{album}', 'AlbumController@destroy')->name('admin.album.destroy');
     
     Route::post('/albums/{album}/photos', 'PhotoController@store')->name('albums.photos.store');
+});
+
+Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi'], function() {
+    Route::post('/albums/{album}/photos', 'PhotoController@store');
 });
 
 Auth::routes();

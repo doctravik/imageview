@@ -16,6 +16,9 @@ Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('photo', require('./components/Photo.vue'));
 Vue.component('photos', require('./components/Photos.vue'));
 Vue.component('slider', require('./components/Slider.vue'));
+Vue.component('upload-form', require('./components/upload/UploadForm.vue'));
+Vue.component('file', require('./components/upload/File.vue'));
+Vue.component('statistics', require('./components/upload/Statistics.vue'));
 
 const app = new Vue({
     el: '#app',

@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class UploadPhotoTest extends TestCase
+class UploadPhotosTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -47,7 +47,7 @@ class UploadPhotoTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_user_can_not_upload_photo()
+    public function unauthenticated_user_can_not_upload_photos()
     {
         $album = factory(Album::class)->create();
         
@@ -66,7 +66,7 @@ class UploadPhotoTest extends TestCase
     }
 
     /** @test */
-    public function unauthorized_user_can_not_upload_photo()
+    public function unauthorized_user_can_not_upload_photos()
     {
         $unauthorizedUser = factory(User::class)->create();
         $album = factory(Album::class)->create();

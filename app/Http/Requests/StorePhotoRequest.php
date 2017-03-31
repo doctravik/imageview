@@ -24,22 +24,7 @@ class StorePhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'photos' => 'required|array|max:5',
-            'photos.*' => 'required|mimes:jpg,jpeg,png,bmp|max:2000'
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'photos.*.required' => 'Please upload an image.',
-            'photos.*.mimes' => 'Only jpeg, png and bmp images are allowed.',
-            'photos.*.max' => 'Maximum allowed size for one image is 2MB.'
+            'photo' => 'required|mimes:jpg,jpeg,png,bmp|max:2048',
         ];
     }
 }

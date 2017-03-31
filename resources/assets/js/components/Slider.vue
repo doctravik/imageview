@@ -4,7 +4,7 @@
             <i class="fa fa-caret-left" aria-hidden="true"></i>
         </div>
         <div v-for="photo in sliderPhotos">
-            <div :class="['slider__item', {'.slider__item--active' : isActive(photo.id)}]" 
+            <div :class="['slider__item', {'slider__item--active' : isActive(photo.id)}]" 
                 :style="{ 'background-image': 'url('+ getUrl(photo.path, 'small') +')' }"
                 @click="selectPhoto(photo.id)">
             </div>

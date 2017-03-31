@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Album;
+use App\Photo;
 use App\Traits\InteractWithAlbum;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,4 +29,34 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * User has many albums.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function albums()
+    {
+        return $this->hasMany(Album::class);    
+    }
+
+    /**
+     * User has many photos through albums.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function photos()
+    {
+        return $this->hasManyThrough(Photo::class, Album::class);   
+    }
+
+    /**
+     * User has more photos than limit.
+     * 
+     * @return boolean
+     */
+    public function isOutOfLimit()
+    {
+        return $this->photos->count() >= 5;
+    }
 }

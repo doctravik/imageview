@@ -7,7 +7,7 @@ use App\Photo;
 use App\Thumbnail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePhotoRequest;
+use App\Http\Requests\StorePhotosRequest;
 
 class PhotoController extends Controller
 {
@@ -19,15 +19,14 @@ class PhotoController extends Controller
     /**
      * Store photo in database.
      *  
-     * @param  StorePhotoRequest $request
+     * @param  StorePhotosRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePhotoRequest $request, Album $album)
+    public function store(StorePhotosRequest $request, Album $album)
     {
         $this->authorize('store', [Photo::class, $album]);
 
-        $thumbnails = [];
-
+        $file = request('photos');
         foreach (request('photos') as $file) {
             $photo = Photo::upload($file, $album);
             $thumbnail = Thumbnail::make($photo->path)->resize()->save();
@@ -35,5 +34,4 @@ class PhotoController extends Controller
 
         return back();
     }
-
 }
