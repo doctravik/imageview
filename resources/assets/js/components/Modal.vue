@@ -1,28 +1,35 @@
 <template>
-    <div class="modal is-active gallery" v-show="isActive">
-        <div class="modal-background"></div>
-        <div class="modal-content columns is-gapless is-marginless is-mobile gallery__content">
-            <div class="column">
-                <a class="photo-view__control has-text-centered" v-if="hasPrev()" @click.prevent="prev()">
-                    <i class="fa fa-caret-left" aria-hidden="true"></i>
-                </a> 
-            </div>
+    <div class="gallery" v-show="isActive">
+        <div class="gallery__background"></div>
+        <div class="gallery__wrapper">
+            <div class="gallery__content">
+                <div class="gallery__arrow--column">
+                    <a class="photo-view__control has-text-centered" v-if="hasPrev()" @click.prevent="prev()">
+                        <i class="fa fa-caret-left" aria-hidden="true"></i>
+                    </a> 
+                </div>
 
-            <div class="column is-10 has-text-centered">
-                <img :src="getCurrentUrl()" class="gallery__image">
-            </div>
+                <div class="gallery__viewport">
+                    <img :src="getCurrentUrl()" class="gallery__image">
+                </div>
 
-            <div class="column has-text-centered">                
-                <a class="photo-view__control has-text-centered" v-if="hasNext()" @click.prevent="next()">
-                    <i class="fa fa-caret-right" aria-hidden="true"></i>
-                </a>
+                <div class="gallery__arrow--column">
+                    <a class="gallery__arrow has-text-centered" v-if="hasNext()" @click.prevent="next()">
+                        <i class="fa fa-caret-right" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <button class="modal-close" @click="close"></button>
 
         <slider @change-photo="setCurrentPhoto"
-            :album="album">
+            :album="album" :show-slider="showSlider">
         </slider>
+
+        <button class="modal-close" @click="close"></button>
+
+        <span class="gallery__close-slider" :title="showSlider ? 'Hide slider' : 'Show slider'" @click="toggleSlider">
+            <i class="fa" :class="[showSlider ? 'fa-toggle-on' : 'fa-toggle-off']" aria-hidden="true"></i>
+        </span>
     </div>
 </template>
 
@@ -43,6 +50,7 @@
         data() {
             return {
                 isActive: false,
+                showSlider: true,
                 gallery: new Gallery(this.album.photos)
             }
         },
@@ -154,6 +162,20 @@
              */
             updateSlider() {
                 eventDispatcher.$emit('update-slider', this.album.id, this.gallery.current);
+            },
+
+
+            /**
+             * Toggle slider.
+             * 
+             * @return {void}
+             */
+            toggleSlider() {
+                if(this.showSlider) {
+                    this.showSlider = false;
+                } else {
+                    this.showSlider = true;
+                }
             },
 
             /**

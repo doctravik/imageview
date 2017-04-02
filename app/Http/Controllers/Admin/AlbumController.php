@@ -45,6 +45,19 @@ class AlbumController extends Controller
     }
 
     /**
+     * Show photos from album.
+     * 
+     * @param  Album  $album
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Album $album)
+    {
+        $photos = $album->photos;
+        
+        return view('album.admin.show', compact('album', 'photos'));
+    }
+
+    /**
      * Delete album from database.
      * 
      * @param  \App\Album  $album

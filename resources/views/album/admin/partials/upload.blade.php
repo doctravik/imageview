@@ -9,11 +9,4 @@
 @endif
 
 <upload-form :album="{{ $album }}"></upload-form>
-{{-- <form class="upload" action="{{ route('albums.photos.store', $album->slug) }}" method="post" enctype="multipart/form-data">
-    {{ csrf_field() }}
-
-    <input type="file" name="photos[]" id="uploadPhoto" multiple>
-    <button>Save photo</button>
-</form> --}}
-
 <hr>

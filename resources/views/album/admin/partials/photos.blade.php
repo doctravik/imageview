@@ -1,4 +1,5 @@
-<photos :photos="{{ $photos }}" inline-template>
+<photos :album="{{ $album }}" :photos="{{ $photos }}"></photos>
+{{-- <photos :photos="{{ $photos }}" inline-template>
     <div>
         <div class="columns is-multiline">
             @foreach($photos as $photo)
@@ -12,4 +13,4 @@
         </div>
         <modal :album="{{ $album }}"></modal>
     </div>
-</photos>
+</photos> --}}

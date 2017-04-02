@@ -26,7 +26,6 @@ class PhotoController extends Controller
     {
         $this->authorize('store', [Photo::class, $album]);
 
-        $file = request('photos');
         foreach (request('photos') as $file) {
             $photo = Photo::upload($file, $album);
             $thumbnail = Thumbnail::make($photo->path)->resize()->save();

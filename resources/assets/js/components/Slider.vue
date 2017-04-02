@@ -1,28 +1,26 @@
 <template>
-    <div class="slider">
-        <div class="slider__arrow" @click="prev()" v-if="slider.hasPrev()">
-            <i class="fa fa-caret-left" aria-hidden="true"></i>
-        </div>
-        <div v-for="photo in sliderPhotos">
-            <div :class="['slider__item', {'slider__item--active' : isActive(photo.id)}]" 
-                :style="{ 'background-image': 'url('+ getUrl(photo.path, 'small') +')' }"
-                @click="selectPhoto(photo.id)">
+    <div class="slider" v-if="showSlider">
+        <div class="slider__viewport">
+            <div class="slider__arrow slider__arrow--left" @click="prev()" v-if="slider.hasPrev()">
+                <i class="fa fa-caret-left" aria-hidden="true"></i>
             </div>
-        </div>
-        <div class="slider__arrow" @click="next()" v-if="slider.hasNext()">
-            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <div v-for="photo in sliderPhotos">
+                <div :class="['slider__item', {'slider__item--active' : isActive(photo.id)}]">
+                    <slider-thumbnail :photo="photo" size="small" @activate-thumbnail="selectPhoto"></slider-thumbnail>
+                </div>
+            </div>
+            <div class="slider__arrow slider__arrow--right" @click="next()" v-if="slider.hasNext()">
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { url } from './../utilities/Helpers';
-    import Path from './../utilities/Path';
     import Slider from './Slider.js';
-    import NodePath from 'path';
 
     export default {
-        props: ['album'],
+        props: ['album', 'showSlider'],
         
         computed: {
             photos() {
@@ -34,7 +32,6 @@
             return {
                 sliderPhotos: [],
                 currentPhotoIndex: 0,
-                path: new Path(NodePath),
                 slider: new Slider(5, this.album.photos.length)
             }
         },
@@ -44,19 +41,6 @@
         },
 
         methods: {
-            /**
-             * Get url for thumbnail consider it's size.
-             * 
-             * @param  {string} path
-             * @param  {string} size
-             * @return {string}
-             */
-            getUrl(path, size) {
-                let filepath = this.path.generate(path, size);
-
-                return this.url(filepath);
-            },
-
             /**
              * Move slider to the left.
              * 
@@ -96,11 +80,11 @@
             /**
              * Activate photo.
              * 
-             * @param  {integer} id
+             * @param  {object} photo
              * @return {void}
              */
-            selectPhoto(id) {
-                this.currentPhotoIndex = this.getIndexById(id);
+            selectPhoto(photo) {
+                this.currentPhotoIndex = this.getIndexById(photo.id);
 
                 this.$emit('change-photo', this.currentPhotoIndex);
             },
@@ -148,13 +132,6 @@
                     }
                 });
             },
-
-            /**
-             * Get url for the given path consider storage
-             *
-             * @param {string} path
-             */
-            url
         }
     }
 </script>
