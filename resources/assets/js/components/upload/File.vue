@@ -98,6 +98,8 @@
              * @return {void}
              */
             onSuccess(response) {
+                console.log(response.data);
+                
                 this.done('success');
             },
 

@@ -4,7 +4,7 @@
         <div class="gallery__wrapper">
             <div class="gallery__content">
                 <div class="gallery__arrow--column">
-                    <a class="photo-view__control has-text-centered" v-if="hasPrev()" @click.prevent="prev()">
+                    <a class="gallery__arrow has-text-centered" v-if="hasPrev()" @click.prevent="prev()">
                         <i class="fa fa-caret-left" aria-hidden="true"></i>
                     </a> 
                 </div>
@@ -21,8 +21,8 @@
             </div>
         </div>
 
-        <slider @change-photo="setCurrentPhoto"
-            :album="album" :show-slider="showSlider">
+        <slider @change-photo="setCurrentIndex"
+            :album="album" :photos="photos" :show-slider="showSlider">
         </slider>
 
         <button class="modal-close" @click="close"></button>
@@ -39,19 +39,13 @@
     import { url } from './../utilities/Helpers';
 
     export default {
-        props: ['album'],
-        
-        computed: {
-            photos() {
-                return this.album.photos;
-            }
-        },
-        
+        props: ['album', 'photos'],
+
         data() {
             return {
                 isActive: false,
                 showSlider: true,
-                gallery: new Gallery(this.album.photos)
+                gallery: new Gallery(this.photos)
             }
         },
 
@@ -66,16 +60,67 @@
              * @return {void}
              */
             listenEvents() {
-                eventDispatcher.$on('show-modal', (photo) => {
-                    if(photo.album_id === this.album.id) {
-                        let index = this.photos.map(item => item.id).indexOf(photo.id);
-                        this.setCurrentPhoto(index);
+                eventDispatcher.$on('show-modal', (photo, albumId) => {
+                    if(albumId === this.album.id) {
+                        this.setCurrentPhoto(photo);
+                        this.updateGallery();
                         this.updateSlider();
-                        this.open();           
+                        this.open();
                     } else {
                         this.close();
                     }
                 });
+            },
+
+
+            /**
+             * Select photo.
+             * 
+             * @param {object} photo
+             * @return {void}
+             */
+            setCurrentPhoto(photo) {
+                if(photo && photo.hasOwnProperty('id')) {
+                    this.setCurrentIndex(this.getIndexById(photo.id));
+                }
+            },
+
+            /**
+             * Set index as a current
+             * 
+             * @param {number} index
+             * @return {void}
+             */
+            setCurrentIndex(index) {
+                this.gallery.setCursor(index);
+            },
+
+            /**
+             * Get index of photo in the gallery.
+             * 
+             * @param  {number} photoId
+             * @return {number}
+             */
+            getIndexById(photoId) {
+                return this.photos.map(item => item.id).indexOf(photoId);
+            },
+
+            /**
+             * Update slider.
+             * 
+             * @return {void}
+             */
+            updateSlider() {
+                eventDispatcher.$emit('update-slider', this.album.id, this.gallery.current);
+            },
+
+            /**
+             * Update Gallery.
+             * 
+             * @return {void}
+             */
+            updateGallery() {
+                this.gallery.setItems(this.photos);
             },
 
             /**
@@ -97,7 +142,7 @@
             },
 
             /**
-             * Move to prev photo.
+             * Get prev photo of the gallery.
              * 
              * @return {void}
              */
@@ -107,7 +152,7 @@
             },
 
             /**
-             * Move to next photo.
+             * Get next photo of the gallery.
              * 
              * @return {void}
              */
@@ -135,17 +180,7 @@
             },
 
             /**
-             * Set current photo.number
-             * 
-             * @param {number} index
-             * @return {void}
-             */
-            setCurrentPhoto(index) {
-                this.gallery.setCursor(index);
-            },
-
-            /**
-             * Get url of the current image.
+             * Get url of the current photo.
              *     
              * @return {string}
              */
@@ -154,16 +189,6 @@
 
                 return photo ? url(photo.path) : '';
             },
-
-            /**
-             * Update slider.
-             * 
-             * @return {void}
-             */
-            updateSlider() {
-                eventDispatcher.$emit('update-slider', this.album.id, this.gallery.current);
-            },
-
 
             /**
              * Toggle slider.

@@ -51,10 +51,8 @@ class AlbumController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Album $album)
-    {
-        $photos = $album->photos;
-        
-        return view('album.admin.show', compact('album', 'photos'));
+    {        
+        return view('album.admin.show', compact('album'));
     }
 
     /**

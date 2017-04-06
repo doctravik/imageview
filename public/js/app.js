@@ -2412,19 +2412,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['album'],
-
-    computed: {
-        photos: function photos() {
-            return this.album.photos;
-        }
-    },
+    props: ['album', 'photos'],
 
     data: function data() {
         return {
             isActive: false,
             showSlider: true,
-            gallery: new __WEBPACK_IMPORTED_MODULE_1__utilities_Collection__["a" /* default */](this.album.photos)
+            gallery: new __WEBPACK_IMPORTED_MODULE_1__utilities_Collection__["a" /* default */](this.photos)
         };
     },
     mounted: function mounted() {
@@ -2441,18 +2435,73 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         listenEvents: function listenEvents() {
             var _this = this;
 
-            eventDispatcher.$on('show-modal', function (photo) {
-                if (photo.album_id === _this.album.id) {
-                    var index = _this.photos.map(function (item) {
-                        return item.id;
-                    }).indexOf(photo.id);
-                    _this.setCurrentPhoto(index);
+            eventDispatcher.$on('show-modal', function (photo, albumId) {
+                if (albumId === _this.album.id) {
+                    _this.setCurrentPhoto(photo);
+                    _this.updateGallery();
                     _this.updateSlider();
                     _this.open();
                 } else {
                     _this.close();
                 }
             });
+        },
+
+
+        /**
+         * Select photo.
+         * 
+         * @param {object} photo
+         * @return {void}
+         */
+        setCurrentPhoto: function setCurrentPhoto(photo) {
+            if (photo && photo.hasOwnProperty('id')) {
+                this.setCurrentIndex(this.getIndexById(photo.id));
+            }
+        },
+
+
+        /**
+         * Set index as a current
+         * 
+         * @param {number} index
+         * @return {void}
+         */
+        setCurrentIndex: function setCurrentIndex(index) {
+            this.gallery.setCursor(index);
+        },
+
+
+        /**
+         * Get index of photo in the gallery.
+         * 
+         * @param  {number} photoId
+         * @return {number}
+         */
+        getIndexById: function getIndexById(photoId) {
+            return this.photos.map(function (item) {
+                return item.id;
+            }).indexOf(photoId);
+        },
+
+
+        /**
+         * Update slider.
+         * 
+         * @return {void}
+         */
+        updateSlider: function updateSlider() {
+            eventDispatcher.$emit('update-slider', this.album.id, this.gallery.current);
+        },
+
+
+        /**
+         * Update Gallery.
+         * 
+         * @return {void}
+         */
+        updateGallery: function updateGallery() {
+            this.gallery.setItems(this.photos);
         },
 
 
@@ -2477,7 +2526,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         /**
-         * Move to prev photo.
+         * Get prev photo of the gallery.
          * 
          * @return {void}
          */
@@ -2488,7 +2537,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         /**
-         * Move to next photo.
+         * Get next photo of the gallery.
          * 
          * @return {void}
          */
@@ -2519,18 +2568,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         /**
-         * Set current photo.number
-         * 
-         * @param {number} index
-         * @return {void}
-         */
-        setCurrentPhoto: function setCurrentPhoto(index) {
-            this.gallery.setCursor(index);
-        },
-
-
-        /**
-         * Get url of the current image.
+         * Get url of the current photo.
          *     
          * @return {string}
          */
@@ -2542,13 +2580,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         /**
-         * Update slider.
+         * Toggle slider.
          * 
          * @return {void}
          */
-        updateSlider: function updateSlider() {
-            eventDispatcher.$emit('update-slider', this.album.id, this.gallery.current);
-        },
         toggleSlider: function toggleSlider() {
             if (this.showSlider) {
                 this.showSlider = false;
@@ -2586,11 +2621,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['album', 'photos'],
+    props: ['album'],
+
+    data: function data() {
+        return {
+            photos: [],
+            currentPhoto: null
+        };
+    },
+    mounted: function mounted() {
+        this.fetchPhotos();
+    },
+
 
     methods: {
+        /**
+         * Show gallery modal.
+         * 
+         * @param  {object} photo
+         * @return {void}
+         */
         showModal: function showModal(photo) {
-            eventDispatcher.$emit('show-modal', photo);
+            this.currentPhoto = photo;
+            eventDispatcher.$emit('show-modal', photo, this.album.id);
+        },
+
+
+        /**
+         * Fetch photos from server.
+         * 
+         * @return {Promise}
+         */
+        fetchPhotos: function fetchPhotos() {
+            var _this = this;
+
+            axios.get('/webapi/albums/' + this.album.slug + '/photos').then(function (response) {
+                _this.photos = response.data.data;
+            });
         }
     }
 });
@@ -2621,26 +2688,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-// import { url } from './../utilities/Helpers';
-// import Path from './../utilities/Path';
 
-// import NodePath from 'path';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['album', 'showSlider'],
+    props: ['album', 'photos', 'showSlider'],
 
     computed: {
-        photos: function photos() {
-            return this.album.photos;
+        slider: function slider() {
+            return new __WEBPACK_IMPORTED_MODULE_0__Slider_js__["a" /* default */](5, this.photos.length);
         }
     },
 
     data: function data() {
         return {
             sliderPhotos: [],
-            currentPhotoIndex: 0,
-            // path: new Path(NodePath),
-            slider: new __WEBPACK_IMPORTED_MODULE_0__Slider_js__["a" /* default */](5, this.album.photos.length)
+            currentPhotoIndex: null
         };
     },
     mounted: function mounted() {
@@ -2649,19 +2711,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        /**
-         * Get url for thumbnail consider it's size.
-         * 
-         * @param  {string} path
-         * @param  {string} size
-         * @return {string}
-         */
-        // getUrl(path, size) {
-        //     let filepath = this.path.generate(path, size);
-
-        //     return this.url(filepath);
-        // },
-
         /**
          * Move slider to the left.
          * 
@@ -2699,9 +2748,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         /**
-         * Activate photo.
+         * Activate photo without change slider position
          * 
-         * @param  {integer} id
+         * @param  {object} photo
          * @return {void}
          */
         selectPhoto: function selectPhoto(photo) {
@@ -2809,6 +2858,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['photo', 'size'],
 
     computed: {
+        /**
+         * Get url to the thumbnail.
+         * 
+         * @return {string}
+         */
         url: function url() {
             return this.getUrl(this.path(this.size));
         }
@@ -2822,9 +2876,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
+        /**
+         * Show full photo.
+         * 
+         * @return {void}
+         */
         activate: function activate() {
             this.$emit('activate-thumbnail', this.photo);
         },
+
+
+        /**
+         * Get path to the thumbnail.
+         * 
+         * @param  {string} size
+         * @return {string}
+         */
         path: function path(size) {
             var segments = this.parser.parse(this.photo.path);
 
@@ -2952,6 +3019,8 @@ var CancelToken = axios.CancelToken;
          * @return {void}
          */
         onSuccess: function onSuccess(response) {
+            console.log(response.data);
+
             this.done('success');
         },
 
@@ -3629,6 +3698,7 @@ var Collection = function () {
 
         /**
          * Check if collection has key.
+         * 
          * @param  {integer}  index
          * @return {boolean}
          */
@@ -3763,27 +3833,64 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 var NodePathParser = function () {
+    /**
+     * Create instance of NodePathParser.
+     * 
+     * @return {void}
+     */
     function NodePathParser() {
         _classCallCheck(this, NodePathParser);
 
         this.parser = __WEBPACK_IMPORTED_MODULE_0_path___default.a;
     }
 
+    /**
+     * Get basename.
+     * 
+     * @param  {string} path
+     * @return {string}
+     */
+
+
     _createClass(NodePathParser, [{
         key: 'basename',
         value: function basename(path) {
             return this.parser.basename(path);
         }
+
+        /**
+         * Get dirname.
+         * 
+         * @param  {string} path
+         * @return {string}
+         */
+
     }, {
         key: 'dirname',
         value: function dirname(path) {
             return this.parser.dirname(path);
         }
+
+        /**
+         * Get filename.
+         * 
+         * @param  {string} path
+         * @return {string}
+         */
+
     }, {
         key: 'filename',
         value: function filename(path) {
             return this.basename(path).substring(0, this.basename(path).lastIndexOf('.'));
         }
+
+        /**
+         * Get extension.
+         * 
+         * @param  {string} path
+         * @return {string}
+         */
+
     }, {
         key: 'extname',
         value: function extname(path) {
@@ -3806,11 +3913,24 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Parser = function () {
+    /**
+     * Create instance of Parser.
+     * @param  {object} parser
+     * @return {void}
+     */
     function Parser(parser) {
         _classCallCheck(this, Parser);
 
         this.parser = parser;
     }
+
+    /**
+     * Parse path.
+     * 
+     * @param  {string} path
+     * @return {object}
+     */
+
 
     _createClass(Parser, [{
         key: "parse",
@@ -4308,7 +4428,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "gallery__arrow--column"
   }, [(_vm.hasPrev()) ? _c('a', {
-    staticClass: "photo-view__control has-text-centered",
+    staticClass: "gallery__arrow has-text-centered",
     on: {
       "click": function($event) {
         $event.preventDefault();
@@ -4345,10 +4465,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]) : _vm._e()])])]), _vm._v(" "), _c('slider', {
     attrs: {
       "album": _vm.album,
+      "photos": _vm.photos,
       "show-slider": _vm.showSlider
     },
     on: {
-      "change-photo": _vm.setCurrentPhoto
+      "change-photo": _vm.setCurrentIndex
     }
   }), _vm._v(" "), _c('button', {
     staticClass: "modal-close",
@@ -4427,7 +4548,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })], 1)
   })), _vm._v(" "), _c('modal', {
     attrs: {
-      "album": _vm.album
+      "album": _vm.album,
+      "photos": _vm.photos,
+      "current-photo": _vm.currentPhoto
     }
   })], 1)
 },staticRenderFns: []}

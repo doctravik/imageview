@@ -52,6 +52,7 @@ class Collection
 
     /**
      * Check if collection has key.
+     * 
      * @param  {integer}  index
      * @return {boolean}
      */

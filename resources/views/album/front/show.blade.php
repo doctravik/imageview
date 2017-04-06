@@ -7,5 +7,5 @@
         @include('album.admin.partials.upload')
     @endcan
 
-    @include('album.admin.partials.photos')
+    @include('album.front.partials.photos')
 @endsection

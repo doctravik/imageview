@@ -57,6 +57,6 @@ class User extends Authenticatable
      */
     public function isOutOfLimit()
     {
-        return $this->photos->count() >= 200;
+        return $this->photos->count() >= 5;
     }
 }

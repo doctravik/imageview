@@ -27,7 +27,7 @@ class Album extends Model
      */
     public function url()
     {
-        return url('/albums/' . $this->slug);
+        return url('/admin/albums/' . $this->slug);
     }
 
     /**

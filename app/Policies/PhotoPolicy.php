@@ -12,6 +12,18 @@ class PhotoPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine if the user can get all photo from album.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Album $album
+     * @return bool
+     */
+    public function index(User $user, Album $album)
+    {
+        return $user->id === $album->user_id;
+    }
+
+    /**
      * Determine if the user can store photo to the given album.
      *
      * @param  \App\User  $user

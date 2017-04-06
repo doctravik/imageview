@@ -5,18 +5,48 @@
                 <thumbnail :photo="photo" size="small" @activate-thumbnail="showModal"></thumbnail>
             </div>
         </div>
-        <modal :album="album"></modal>
+        <modal :album="album" :photos="photos" :current-photo="currentPhoto"></modal>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['album', 'photos'],
+        props: ['album'],
+
+        data() {
+            return {
+                photos: [],
+                currentPhoto: null,
+            }
+        },
+
+        mounted() {
+            this.fetchPhotos();
+        },
 
         methods: {
+            /**
+             * Show gallery modal.
+             * 
+             * @param  {object} photo
+             * @return {void}
+             */
             showModal(photo) {
-                eventDispatcher.$emit('show-modal', photo);
+                this.currentPhoto = photo;
+                eventDispatcher.$emit('show-modal', photo, this.album.id);
             },
+
+            /**
+             * Fetch photos from server.
+             * 
+             * @return {Promise}
+             */
+            fetchPhotos() {
+                axios.get('/webapi/albums/' + this.album.slug + '/photos')
+                    .then(response => {
+                        this.photos = response.data.data;
+                    });
+            }
         }
     }
 </script>

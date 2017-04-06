@@ -7,10 +7,23 @@ use App\Photo;
 use App\Thumbnail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Transformers\PhotoTransformer;
 use App\Http\Requests\StorePhotoRequest;
 
 class PhotoController extends Controller
 {
+    public function index(Album $album)
+    {
+        $this->authorize('index', [Photo::class, $album]);
+
+        $photos = $album->photos;
+
+        return fractal()
+            ->collection($photos)
+            ->transformWith(new PhotoTransformer())
+            ->toArray();
+    }
+
     /**
      * Store photo in database.
      *  
@@ -28,6 +41,6 @@ class PhotoController extends Controller
         $photo = Photo::upload(request('photo'), $album);
         $thumbnail = Thumbnail::make($photo->path)->resize()->save();
 
-        return response()->json('success', 200);
+        return response()->json($photo, 200);
     }
 }

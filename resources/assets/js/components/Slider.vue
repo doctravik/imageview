@@ -20,19 +20,18 @@
     import Slider from './Slider.js';
 
     export default {
-        props: ['album', 'showSlider'],
+        props: ['album', 'photos', 'showSlider'],
         
         computed: {
-            photos() {
-                return this.album.photos;
-            },
+            slider() {
+                return  new Slider(5, this.photos.length);
+            }
         },
 
         data() {
             return {
                 sliderPhotos: [],
-                currentPhotoIndex: 0,
-                slider: new Slider(5, this.album.photos.length)
+                currentPhotoIndex: null
             }
         },
 
@@ -78,7 +77,7 @@
             },
 
             /**
-             * Activate photo.
+             * Activate photo without change slider position
              * 
              * @param  {object} photo
              * @return {void}
