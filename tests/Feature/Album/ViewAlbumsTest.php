@@ -56,4 +56,38 @@ class ViewAlbumsTest extends TestCase
         $response->assertViewHas('album');
         $response->assertSee($album->name);
     }
+
+    /** @test */
+    public function unauthenticated_user_cannot_view_admin_album()
+    {
+        $album = factory(Album::class)->create();
+
+        $response = $this->get("/admin/albums/{$album->slug}");
+
+        $response->assertRedirect('login');
+    }
+
+    /** @test */
+    public function unauthorized_user_cannot_view_admin_album()
+    {
+        $unauthorizedUser = factory(User::class)->create();
+        $album = factory(Album::class)->create();
+
+        $response = $this->actingAs($unauthorizedUser)->get("/admin/albums/{$album->slug}");
+
+        $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function authorized_user_can_view_admin_album()
+    {
+        $user = factory(User::class)->create();
+        $album = factory(Album::class)->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->get("/admin/albums/{$album->slug}");
+
+        $response->assertStatus(200);
+        $response->assertViewHas('album');
+        $response->assertSee($album->name);
+    }
 }

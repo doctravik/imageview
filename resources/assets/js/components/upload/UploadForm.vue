@@ -22,7 +22,7 @@
             <file v-for="file in files" 
                 :file="file"
                 :input-name="fileInputName"
-                :endpoint="'/webapi/albums/' + album.slug + '/photos'">    
+                :endpoint="endpoint">    
             </file>
 
             <div v-if="state.isDone()"><button class="button" @click="reset">Reset</button></div>
@@ -43,6 +43,7 @@
                 isDraggedOver: false,
                 fileInputName: 'photo',
                 state: new State(['initial', 'uploading', 'done']),
+                endpoint: '/webapi/albums/' + this.album.slug + '/photos'
             }
         },
         

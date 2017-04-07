@@ -19,7 +19,7 @@
         },
 
         mounted() {
-            eventDispatcher.$on('file-was-uploaded', () => {
+            eventDispatcher.$on('file-was-processed', () => {
                 this.update();
             });
 

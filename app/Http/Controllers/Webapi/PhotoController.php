@@ -41,6 +41,10 @@ class PhotoController extends Controller
         $photo = Photo::upload(request('photo'), $album);
         $thumbnail = Thumbnail::make($photo->path)->resize()->save();
 
-        return response()->json($photo, 200);
+        return fractal()
+            ->item($photo)
+            ->parseIncludes('album')
+            ->transformWith(new PhotoTransformer())
+            ->toArray();
     }
 }

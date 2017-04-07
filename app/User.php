@@ -59,4 +59,15 @@ class User extends Authenticatable
     {
         return $this->photos->count() >= 5;
     }
+
+    /**
+     * Check if user is owner of album.
+     *
+     * @param  Album $album
+     * @return boolean
+     */
+    public function isOwnerOf(Album $album)
+    {
+        return $this->id === $album->user_id;
+    }
 }

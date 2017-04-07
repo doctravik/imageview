@@ -98,7 +98,7 @@
              * @return {void}
              */
             onSuccess(response) {
-                console.log(response.data);
+                eventDispatcher.$emit('file-was-uploaded', response.data.data);
                 
                 this.done('success');
             },
@@ -126,7 +126,7 @@
              */
             done(state) {
                 this.state.set(state);
-                eventDispatcher.$emit('file-was-uploaded');
+                eventDispatcher.$emit('file-was-processed');
             },
 
             /**

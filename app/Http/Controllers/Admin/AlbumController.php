@@ -51,7 +51,9 @@ class AlbumController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Album $album)
-    {        
+    {
+        $this->authorize('show', $album);
+
         return view('album.admin.show', compact('album'));
     }
 

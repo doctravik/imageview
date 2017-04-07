@@ -37,4 +37,15 @@ class UserTest extends TestCase
         factory(Photo::class, 3)->create(['album_id' => $album->id]);
         $this->assertFalse($user->fresh()->isOutOfLimit());
     }
+
+    /** @test */
+    public function it_can_check_if_user_is_owner_of_album()
+    {
+        $user = factory(User::class)->create();
+        $album = factory(Album::class)->create(['user_id' => $user->id]);
+        $anotherAlbum = factory(Album::class)->create();
+
+        $this->assertTrue($user->isOwnerOf($album));
+        $this->assertFalse($user->isOwnerOf($anotherAlbum));
+    }
 }

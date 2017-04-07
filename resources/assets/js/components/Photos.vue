@@ -22,6 +22,7 @@
 
         mounted() {
             this.fetchPhotos();
+            this.listenEvents();
         },
 
         methods: {
@@ -46,6 +47,14 @@
                     .then(response => {
                         this.photos = response.data.data;
                     });
+            },
+
+            listenEvents() {
+                eventDispatcher.$on('file-was-uploaded', photo => {
+                    if(photo.album.data.id === this.album.id) {
+                        this.photos.push(photo);
+                    }
+                });
             }
         }
     }
