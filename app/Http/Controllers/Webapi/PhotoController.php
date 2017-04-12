@@ -12,6 +12,12 @@ use App\Http\Requests\StorePhotoRequest;
 
 class PhotoController extends Controller
 {
+    /**
+     * View all photos from album.
+     * 
+     * @param  Album  $album
+     * @return array
+     */
     public function index(Album $album)
     {
         $this->authorize('index', [Photo::class, $album]);
@@ -28,7 +34,7 @@ class PhotoController extends Controller
      * Store photo in database.
      *  
      * @param  StorePhotoRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Array
      */
     public function store(StorePhotoRequest $request, Album $album)
     {
@@ -46,5 +52,21 @@ class PhotoController extends Controller
             ->parseIncludes('album')
             ->transformWith(new PhotoTransformer())
             ->toArray();
+    }
+
+    /**
+     * Delete photo from database.
+     * 
+     * @param  Album  $album
+     * @param  Photo  $photo
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Album $album, Photo $photo) 
+    {
+        $this->authorize('destroy', [$photo, $album]);
+
+        $photo->delete();
+
+        return response()->json(['message' => 'success'], 200);       
     }
 }

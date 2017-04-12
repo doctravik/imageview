@@ -51,14 +51,14 @@ class UrlHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_s3_url()
-    {
-        config(['filesystems.default' => 's3']);
-        $photo = factory(Photo::class)->create(['path' => 'images/logo.png']);
+    // public function it_can_return_s3_url()
+    // {
+    //     config(['filesystems.default' => 's3']);
+    //     $photo = factory(Photo::class)->create(['path' => 'images/logo.png']);
         
-        $this->assertEquals(
-            sprintf('https://s3.%s.amazonaws.com/%s/images/logo.png', env('AWS_REGION'), env('AWS_BUCKET')),
-            $photo->url()
-        );
-    }
+    //     $this->assertEquals(
+    //         sprintf('https://s3.%s.amazonaws.com/%s/images/logo.png', env('AWS_REGION'), env('AWS_BUCKET')),
+    //         $photo->url()
+    //     );
+    // }
 }

@@ -13,10 +13,10 @@ require('./bootstrap');
  */
 
 Vue.component('modal', require('./components/Modal.vue'));
-Vue.component('thumbnail', require('./components/Thumbnail.vue'));
-Vue.component('slider-thumbnail', require('./components/SliderThumbnail.vue'));
+Vue.component('thumbnail', require('./components/thumbnail/Thumbnail.vue'));
+Vue.component('slider-thumbnail', require('./components/slider/SliderThumbnail.vue'));
 Vue.component('photos', require('./components/Photos.vue'));
-Vue.component('slider', require('./components/Slider.vue'));
+Vue.component('slider', require('./components/slider/Slider.vue'));
 Vue.component('upload-form', require('./components/upload/UploadForm.vue'));
 Vue.component('file', require('./components/upload/File.vue'));
 Vue.component('statistics', require('./components/upload/Statistics.vue'));

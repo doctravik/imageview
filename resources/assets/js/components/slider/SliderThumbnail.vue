@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import Thumbnail from './Thumbnail.vue';
+    import Thumbnail from './../mixins/Thumbnail.js';
 
     export default {
         mixins: [Thumbnail]

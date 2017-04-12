@@ -34,4 +34,16 @@ class PhotoPolicy
     {
         return $user->id === $album->user_id;
     }
+
+    /**
+     * Determine if the user can delete photo.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Photo $photo
+     * @return bool
+     */
+    public function destroy(User $user, Photo $photo, Album $album)
+    {
+        return $user->isOwnerOf($album);
+    }
 }

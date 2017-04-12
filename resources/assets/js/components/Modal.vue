@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import Slider from './Slider.vue';
+    import Slider from './slider/Slider.vue';
     import Gallery from './../utilities/Collection';
     import { url } from './../utilities/Helpers';
 
