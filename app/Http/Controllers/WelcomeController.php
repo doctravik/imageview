@@ -14,8 +14,11 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $albums = Album::latest()->get();
-
+        $albums = Album::join('users', 'users.id', '=', 'albums.user_id')
+            ->select('albums.*', 'users.name as username')
+            ->with(['avatar', 'publicPhotos'])
+            ->latest()->paginate(1);
+        
         return view('welcome', compact('albums'));
     }
 }

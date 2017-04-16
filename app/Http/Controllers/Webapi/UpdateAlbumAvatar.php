@@ -6,6 +6,7 @@ use App\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Transformers\PhotoTransformer;
 
 class UpdateAlbumAvatar extends Controller
 {
@@ -21,8 +22,11 @@ class UpdateAlbumAvatar extends Controller
 
         $album->resetAvatars();
 
-        $photo->toggleAvatar();
+        $photo = $photo->toggleAvatar();
 
-        return response()->json([], 200);
+        return fractal()
+            ->item($photo)
+            ->transformWith(new PhotoTransformer())
+            ->toArray();
     }
 }

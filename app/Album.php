@@ -47,7 +47,17 @@ class Album extends Model
      */
     public function photos()
     {
-        return $this->hasMany(Photo::class);    
+        return $this->hasMany(Photo::class);
+    }
+
+    /**
+     * Album has many public photos.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function publicPhotos()
+    {
+        return $this->photos()->where('is_public', true);    
     }
 
     /**
@@ -58,6 +68,15 @@ class Album extends Model
     public function thumbnails()
     {
         return $this->hasManyThrough(Thumbnail::class, Photo::class);
+    }
+
+    /**
+     * Album
+     * @return [type] [description]
+     */
+    public function avatar()
+    {
+        return $this->hasOne(Photo::class)->where('is_avatar', true);
     }
 
     /**

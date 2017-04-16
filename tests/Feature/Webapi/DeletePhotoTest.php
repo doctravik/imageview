@@ -20,7 +20,7 @@ class DeletePhotoTest extends TestCase
         $album = factory(Album::class)->create();
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
-        $response = $this->json('delete', "/webapi/albums/{$album->slug}/photos/{$photo->slug}");
+        $response = $this->json('delete', "/webapi/photos/{$photo->slug}");
 
         $response->assertStatus(403);
         $this->assertDatabaseHas('photos', $photo->toArray());
@@ -34,7 +34,7 @@ class DeletePhotoTest extends TestCase
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
         $response = $this->actingAs($unauthorizedUser)
-            ->json('delete', "/webapi/albums/{$album->slug}/photos/{$photo->slug}");
+            ->json('delete', "/webapi/photos/{$photo->slug}");
 
         $response->assertStatus(403);
         $this->assertDatabaseHas('photos', $photo->toArray());
@@ -48,7 +48,7 @@ class DeletePhotoTest extends TestCase
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
         $response = $this->actingAs($user)
-            ->json('delete', "/webapi/albums/{$album->slug}/photos/{$photo->slug}");
+            ->json('delete', "/webapi/photos/{$photo->slug}");
 
         $response->status(200);
         $this->assertDatabaseMissing('photos', $photo->toArray());

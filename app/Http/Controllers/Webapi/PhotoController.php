@@ -62,9 +62,9 @@ class PhotoController extends Controller
      * @param  Photo  $photo
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdatePhotoRequest $request, Album $album, Photo $photo)
+    public function update(UpdatePhotoRequest $request, Photo $photo)
     {
-        $this->authorize('update', [Photo::class, $album]);
+        $this->authorize('update', [Photo::class, $photo->album]);
 
         $result = $photo->update($request->intersectKeys(['is_public']));
 
@@ -81,9 +81,9 @@ class PhotoController extends Controller
      * @param  Photo  $photo
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Album $album, Photo $photo) 
+    public function destroy(Photo $photo) 
     {
-        $this->authorize('destroy', [$photo, $album]);
+        $this->authorize('destroy', [$photo, $photo->album]);
 
         $photo->delete();
 

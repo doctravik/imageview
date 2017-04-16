@@ -42,3 +42,30 @@
     text-align: center;
     transform: translate(-50%, -50%);
 }
+
+.thumbnail__default-image--small {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: whitesmoke;
+    width: 300px;
+    height: 300px;
+}
+
+.thumbnail__default-image--medium {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: whitesmoke;
+    width: 600px;
+    height: 300px;
+}
+
+.thumbnail__default-image--large {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: whitesmoke;
+    width: 800px;
+    height: 300px;
+}

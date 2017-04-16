@@ -167,9 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
-        Spatie\Fractal\FractalServiceProvider::class,
-        
+
         /*
          * Application Service Providers...
          */
@@ -180,7 +178,10 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\ObserverServiceProvider::class,
-
+        
+        Intervention\Image\ImageServiceProvider::class,
+        Spatie\Fractal\FractalServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*

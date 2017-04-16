@@ -117,6 +117,12 @@ class Photo extends Model
     {
         $this->is_avatar = !$this->is_avatar;
 
+        if($this->isAvatar()) {
+            $this->makePublic();
+        }
+
         $this->save();
+
+        return $this;
     }
 }

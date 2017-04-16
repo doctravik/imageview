@@ -20,7 +20,7 @@ class UpdatePhotoPublicTest extends TestCase
         $album = factory(Album::class)->create();
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
-        $response = $this->json('patch', "/webapi/albums/{$album->slug}/photos/{$photo->slug}/", [
+        $response = $this->json('patch', "/webapi/photos/{$photo->slug}", [
             'is_public' => true
         ]);
 
@@ -35,7 +35,7 @@ class UpdatePhotoPublicTest extends TestCase
         $album = factory(Album::class)->create();
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/{$photo->slug}/", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/photos/{$photo->slug}", [
             'is_public' => true
         ]);
 
@@ -50,7 +50,7 @@ class UpdatePhotoPublicTest extends TestCase
         $album = factory(Album::class)->create(['user_id' => $user->id]);
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/{$photo->slug}/", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/photos/{$photo->slug}", [
             'is_public' => true
         ]);
 
@@ -65,7 +65,7 @@ class UpdatePhotoPublicTest extends TestCase
         $album = factory(Album::class)->create(['user_id' => $user->id]);
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/{$photo->slug}/", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/photos/{$photo->slug}", [
             'is_public' => 'hello'
         ]);
 
@@ -80,7 +80,7 @@ class UpdatePhotoPublicTest extends TestCase
         $album = factory(Album::class)->create(['user_id' => $user->id]);
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/{$photo->slug}/", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/photos/{$photo->slug}", [
             'is_public' => ''
         ]);
 

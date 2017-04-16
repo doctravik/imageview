@@ -47,28 +47,70 @@
             },
 
             /**
-             * Notify parent about deleting photo.
+             * Delete photo from database.
+             * 
+             * @return {void}
              */
             delete() {
-                this.$emit('delete-photo')
+                axios.delete('/webapi/photos/' + this.photo.slug)
+                    .then(response => {
+                        this.$emit('photo-was-deleted', this.photo.id);
+                    });
             },
 
             /**
-             * Notify parent about toggle visibility.
+             * Update visibility.
+             *
+             * @return void
              */
             visibility() {
+                let data = {};
+
                 if(this.isPublic) {
-                    this.$emit('toggle-visibility', {'is_public': false});
+                    data.is_public = false;
                 } else {
-                    this.$emit('toggle-visibility', {'is_public': true});
+                    data.is_public = true;
                 }
+
+                this.updatePhoto(data);
             },
 
             /**
-             * Notify parent about toggle avatar.
+             * Update photo in database.
+             *
+             * @param {object}
+             * @return {void}
+             */
+            updatePhoto(data) {
+                axios.patch('/webapi/photos/' + this.photo.slug, data)
+                    .then(response => {;
+                        this.updateClientPhoto(response.data.data);
+                    });
+            },
+
+            /**
+             * Toggle avatar property.
+             * 
+             * @return {void}
              */
             avatar() {
-                this.$emit('toggle-avatar');
+                axios.patch('/webapi/photos/' + this.photo.slug + '/avatars')
+                    .then(response => {;
+                        this.$emit('reset-avatars', this.photo.id);
+                        this.updateClientPhoto(response.data.data);
+                    });
+            },
+
+            /**
+             * Update photo on client side.
+             * 
+             * @param  {object} photo
+             * @return {void}      
+             */
+            updateClientPhoto(photo) {
+                for(let prop in photo) {
+                    this.photo[prop] = photo[prop];
+                }
             }
         },
 

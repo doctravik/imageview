@@ -14,5 +14,7 @@
     "laravel-mix": "^0.8.8",
     "vue": "^2.1.10"
   },
-  "dependencies": {}
+  "dependencies": {
+    "pluralize": "^4.0.0"
+  }
 }

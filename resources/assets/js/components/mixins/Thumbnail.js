@@ -12,7 +12,13 @@ export default {
          * @return {string}
          */
         url() {
-            return this.getUrl(this.path(this.size));
+            let path = this.path(this.size);
+
+            if(!path) {
+                return '';
+            }
+
+            return this.getUrl(path);
         }
     },
 
@@ -39,6 +45,10 @@ export default {
          * @return {string}
          */
         path(size) {
+            if(!this.photo) {
+                return '';
+            }
+
             let segments = this.parser.parse(this.photo.path);
 
             return segments.dirname + '/' + segments.filename + '_' + size + segments.extname;
