@@ -13,7 +13,7 @@ class Photo extends Model
 {
     use UrlHelper;
     
-    protected $fillable = ['name', 'description', 'link', 'path'];
+    protected $fillable = ['name', 'description', 'link', 'path', 'is_public', 'is_avatar'];
 
     /**
     * Get the route key for the model.
@@ -76,5 +76,47 @@ class Photo extends Model
         $photo->name = pathinfo($path, PATHINFO_BASENAME);
 
         return $photo;
+    }
+
+    /**
+     * Check if photo is public.
+     * 
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->is_public;
+    }
+
+    /**
+     * Make photo public.
+     * 
+     * @return void
+     */
+    public function makePublic()
+    {
+        $this->is_public = true;
+    }
+
+    /**
+     * Check if photo is avatar.
+     * 
+     * @return boolean
+     */
+    public function isAvatar()
+    {
+        return $this->is_avatar;
+    }
+
+    /**
+     * Toggle avatar property.
+     * 
+     * @return void
+     */
+    public function toggleAvatar()
+    {
+        $this->is_avatar = !$this->is_avatar;
+
+        $this->save();
     }
 }

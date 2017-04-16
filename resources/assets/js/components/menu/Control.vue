@@ -1,5 +1,5 @@
 <template>
-    <div class="control" @click="activate">
+    <div class="control" :class="classStyle" :title="title" @click="activate">
         <span>
             <slot name="icon"></slot>
         </span>
@@ -8,6 +8,11 @@
 
 <script>
     export default {
+        props: {
+            title: { default: ''},
+            classStyle: { default: ''}
+        },
+
         methods: {
             /**
              * Activate control.
@@ -33,5 +38,22 @@
     .control:hover {
         cursor: pointer;
         background-color: whitesmoke;
+        color: #000;
+    }
+
+    .control.active {
+        color: #00d1b2;
+    }
+
+    .control.active:hover {
+        color: #00a78e;
+    }
+
+    .control.disabled {
+        color: #bbb;
+    }
+
+    .control.disabled:hover {
+        color: #888;
     }
 </style>

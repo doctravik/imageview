@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Transformers\PhotoTransformer;
 use App\Http\Requests\StorePhotoRequest;
+use App\Http\Requests\Webapi\UpdatePhotoRequest;
 
 class PhotoController extends Controller
 {
@@ -50,6 +51,25 @@ class PhotoController extends Controller
         return fractal()
             ->item($photo)
             ->parseIncludes('album')
+            ->transformWith(new PhotoTransformer())
+            ->toArray();
+    }
+
+    /**
+     * Update photo in database.
+     * 
+     * @param  Album  $album
+     * @param  Photo  $photo
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdatePhotoRequest $request, Album $album, Photo $photo)
+    {
+        $this->authorize('update', [Photo::class, $album]);
+
+        $result = $photo->update($request->intersectKeys(['is_public']));
+
+        return fractal()
+            ->item($photo)
             ->transformWith(new PhotoTransformer())
             ->toArray();
     }

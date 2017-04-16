@@ -55,4 +55,55 @@ class PhotoTest extends TestCase
         $this->assertEquals($photo->album_id, $album->id);
         $this->assertDatabaseHas('photos', $photo->toArray());
     }
+
+    /** @test */
+    public function it_check_if_photo_is_private_by_default()
+    {
+        $photo = factory(Photo::class)->create();
+
+        $this->assertFalse($photo->isPublic());
+    }
+
+    /** @test */
+    public function it_can_make_photo_public()
+    {
+        $photo = factory(Photo::class)->create();
+
+        $photo->makePublic();
+
+        $this->assertTrue($photo->isPublic());
+    }
+
+    /** @test */
+    public function it_check_if_photo_is_avatar_by_default()
+    {
+        $photo = factory(Photo::class)->create();
+
+        $this->assertFalse($photo->isAvatar());
+    }
+
+    /** @test */
+    public function it_can_toggle_avatar_property()
+    {
+        $photo = factory(Photo::class)->create();
+
+        $photo->toggleAvatar();
+
+        $this->assertTrue($photo->isAvatar());
+    }
+
+    /** @test */
+    public function it_can_reset_avatars_property_to_all_photos_in_album()
+    {
+        $album = factory(Album::class)->create();
+        $photoOne = factory(Photo::class)->create(['album_id' => $album->id, 'is_avatar' => true]);
+        $photoTwo = factory(Photo::class)->create(['album_id' => $album->id, 'is_avatar' => false]);
+        $photoThree = factory(Photo::class)->create(['is_avatar' => true ]);
+
+        $album->resetAvatars();
+
+        $this->assertFalse($photoOne->fresh()->isAvatar());
+        $this->assertFalse($photoTwo->fresh()->isAvatar());
+        $this->assertTrue($photoThree->fresh()->isAvatar());
+    }
 }

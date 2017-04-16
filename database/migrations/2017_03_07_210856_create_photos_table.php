@@ -21,6 +21,8 @@ class CreatePhotosTable extends Migration
             $table->string('link')->nullable();
             $table->string('description')->nullable();
             $table->integer('album_id')->unsigned()->nullable();
+            $table->boolean('is_public')->default(false);
+            $table->boolean('is_avatar')->default(false);
             $table->timestamps();
 
             $table->foreign('album_id')->references('id')->on('albums')->onDelete('cascade');

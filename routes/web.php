@@ -31,7 +31,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi'], function() {
     Route::get('/albums/{album}/photos', 'PhotoController@index');
     Route::post('/albums/{album}/photos', 'PhotoController@store');
+    Route::patch('/albums/{album}/photos/{photo}', 'PhotoController@update');
     Route::delete('/albums/{album}/photos/{photo}', 'PhotoController@destroy');
+
+    Route::patch('/photos/{photo}/avatars', 'UpdateAlbumAvatar');
 });
 
 Auth::routes();

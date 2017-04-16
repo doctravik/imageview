@@ -36,6 +36,18 @@ class PhotoPolicy
     }
 
     /**
+     * Determine if the user can update photo of the given album.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Album $album
+     * @return bool
+     */
+    public function update(User $user, Album $album)
+    {
+        return $user->isOwnerOf($album);
+    }
+
+    /**
      * Determine if the user can delete photo.
      *
      * @param  \App\User  $user

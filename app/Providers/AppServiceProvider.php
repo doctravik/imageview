@@ -18,12 +18,15 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
         }
 
+        \Request::macro('intersectKeys', function ($keys) {
+            return array_intersect_key($this->all(), array_flip($keys));
+        });
+
         view()->composer([
                 'layouts.partials.nav'
             ], function($view) {
             $view->with('route', Route::currentRouteName());
         });
-
 
         \DB::listen(function ($query) {
             $sqlParts = explode('?', $query->sql);

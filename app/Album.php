@@ -70,4 +70,14 @@ class Album extends Model
     {
         return $this->photos()->save($photo);
     }
+
+    /**
+     * Reset avatars property of the all photos in the album.
+     * 
+     * @return void
+     */
+    public function resetAvatars()
+    {
+        $res = \DB::table('photos')->where('album_id', $this->id)->update(['is_avatar' => false]);
+    }
 }

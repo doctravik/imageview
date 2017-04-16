@@ -14,7 +14,7 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $albums = Album::with('photos')->get();
+        $albums = Album::latest()->get();
 
         return view('welcome', compact('albums'));
     }

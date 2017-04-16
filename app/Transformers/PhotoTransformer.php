@@ -29,6 +29,8 @@ class PhotoTransformer extends TransformerAbstract
             'path' => $photo->path,
             'link' => $photo->link,
             'description' => $photo->description,
+            'is_public' => (bool) $photo->is_public,
+            'is_avatar' => (bool) $photo->is_avatar
         ];
     }
 

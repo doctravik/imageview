@@ -4,7 +4,8 @@
             <div class="column is-4 has-text-centered" v-for="photo in photos">
                 <thumbnail :photo="photo" :album-slug="album.slug" size="small" 
                     @activate-thumbnail="showModal"
-                    @photo-was-deleted="deletePhoto">
+                    @photo-was-deleted="deletePhoto"
+                    @reset-avatars='resetAvatars'>
                 </thumbnail>
             </div>
         </div>
@@ -70,6 +71,20 @@
              */
             deletePhoto(photoId) {
                 this.photos = this.photos.filter(photo => photo.id != photoId);
+            },
+
+            /**
+             * Reset avatars property of all photos.
+             * 
+             * @param  {integer} photoId
+             * @return {void}
+             */
+            resetAvatars(photoId) {
+                this.photos.forEach(photo => {
+                    if(photo.id != photoId) {
+                        photo.is_avatar = false;
+                    }
+                });
             },
 
             listenEvents() {

@@ -33,7 +33,9 @@ $factory->define(App\Photo::class, function (Faker\Generator $faker) {
         'path' => $path,
         'album_id' => factory(App\Album::class)->create()->id,
         'link' => null,
-        'description' => null
+        'description' => null,
+        'is_public' => false,
+        'is_avatar' => false
     ];
 });
 
