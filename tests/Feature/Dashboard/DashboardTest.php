@@ -15,7 +15,7 @@ class DashboardTest extends TestCase
     /** @test */
     public function user_can_visit_own_dashboard()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
 
         $response = $this->actingAs($user)->get('/home');
 
@@ -29,5 +29,15 @@ class DashboardTest extends TestCase
         $response = $this->get('/home');
 
         $response->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function not_active_user_cannot_visit_own_dashboard()
+    {
+        $user = factory(User::class)->create(['active' => false]);
+
+        $response = $this->actingAs($user)->get('/home');
+
+        $response->assertRedirect('/account/confirm');
     }
 }

@@ -5,12 +5,13 @@ namespace App;
 use App\Album;
 use App\Photo;
 use App\Traits\InteractWithAlbum;
+use App\ActivationToken\InteractWithActivationToken;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, InteractWithAlbum;
+    use Notifiable, InteractWithAlbum, InteractWithActivationToken;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'active'
     ];
 
     /**

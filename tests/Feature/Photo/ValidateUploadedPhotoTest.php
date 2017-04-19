@@ -19,7 +19,7 @@ class ValidateUploadedPhotoTest extends TestCase
     {
         parent::setUp();
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
         $this->actingAs($user);
         $album = factory(Album::class)->create();
         $this->url = "/admin/albums/{$album->slug}/photos";

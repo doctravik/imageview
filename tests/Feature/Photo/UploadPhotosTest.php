@@ -21,7 +21,7 @@ class UploadPhotosTest extends TestCase
     /** @test */
     public function authorized_user_can_upload_photos()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create(['user_id' => $user->id]);
 
         $photos = [
@@ -68,7 +68,7 @@ class UploadPhotosTest extends TestCase
     /** @test */
     public function unauthorized_user_can_not_upload_photos()
     {
-        $unauthorizedUser = factory(User::class)->create();
+        $unauthorizedUser = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
 
         $response = $this->actingAs($unauthorizedUser)->post("/admin/albums/{$album->slug}/photos", [

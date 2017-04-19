@@ -8,8 +8,8 @@
                 </modal>
             </div>
         </div>
-        <hr>
-        <pagination :paginator="paginator" v-if="paginator" @page-was-changed="navigate"></pagination>
+        <hr v-if="hasPaginator">
+        <pagination :paginator="paginator" v-if="hasPaginator" @page-was-changed="navigate"></pagination>
     </div>
 </template>
 
@@ -20,6 +20,12 @@
     export default {
         mounted() {
             this.fetchAlbums();
+        },
+
+        computed: {
+            hasPaginator() {
+                return this.paginator && this.paginator.lastPage > 1;
+            }
         },
 
         data() {

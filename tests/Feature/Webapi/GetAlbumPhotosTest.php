@@ -17,7 +17,7 @@ class GetAlbumPhotosTest extends TestCase
     /** @test */
     public function authorized_user_can_get_all_photos_of_own_album()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
         $notOwnAlbum = factory(Album::class)->create();
         $ownAlbum = factory(Album::class)->create(['user_id' => $user->id]);
         $notOwnPhoto = factory(Photo::class)->create(['album_id' => $notOwnAlbum->id]);
@@ -44,11 +44,22 @@ class GetAlbumPhotosTest extends TestCase
     /** @test */
     public function unauthorized_user_cannot_get_all_photos_of_album()
     {
-        $unauthorizedUser = factory(User::class)->create();
+        $unauthorizedUser = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
 
         $response = $this->actingAs($unauthorizedUser)->json('get', "/webapi/albums/{$album->slug}/photos");
 
         $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function not_active_user_cannot_get_all_photos_of_album()
+    {
+        $authorizedUser = factory(User::class)->create(['active' => false]);
+        $album = factory(Album::class)->create();
+
+        $response = $this->actingAs($authorizedUser)->json('get', "/webapi/albums/{$album->slug}/photos");
+
+        $response->assertRedirect('/account/confirm');
     }
 }

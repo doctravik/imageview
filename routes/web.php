@@ -17,9 +17,9 @@ Route::get('/photos/{photo}', 'PhotoController@show')->name('photos.show');
 
 Route::get('/albums/{album}', 'AlbumController@show')->name('albums.show');
 
-Route::get('/home', 'Admin\AlbumController@index')->name('home');
+Route::get('/home', 'Admin\AlbumController@index')->name('home')->middleware('admin');
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
     Route::get('/albums', 'AlbumController@index')->name('admin.album.index');
     Route::get('/albums/{album}', 'AlbumController@show')->name('admin.albums.show');
     Route::post('/albums', 'AlbumController@store')->name('admin.album.store');
@@ -28,7 +28,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     Route::post('/albums/{album}/photos', 'PhotoController@store')->name('albums.photos.store');
 });
 
-Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi'], function() {
+Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi',  'middleware' => 'admin'], function() {
     Route::get('/albums/{album}/photos', 'PhotoController@index');
     Route::post('/albums/{album}/photos', 'PhotoController@store');
     
@@ -36,8 +36,12 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi'], function() {
     Route::delete('/photos/{photo}', 'PhotoController@destroy');
 
     Route::patch('/photos/{photo}/avatars', 'UpdateAlbumAvatar');
-
-    Route::get('/albums', 'AlbumController@index');
 });
+
+Route::get('/webapi/albums', 'Webapi\AlbumController@index');
+
+Route::get('/account/confirm', 'AccountController@confirm')->name('account.confirm');
+Route::get('/account/activate/{token}', 'Auth\ActivateToken')->name('account.activate');
+Route::post('/activation/token/resend/{user}', 'Auth\ResendActivationToken')->name('activation.token.resend');
 
 Auth::routes();

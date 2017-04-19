@@ -22,11 +22,13 @@
     </script>
 </head>
 <body>
-    <div id="app" class="site">
+    <div id="app" class="site" v-cloak>
         @include('layouts.partials.nav')
 
         <section class="section flex-1">
             <div class="container">
+                @include('layouts.partials.flash')
+                
                 @yield('content')
             </div>
         </section>

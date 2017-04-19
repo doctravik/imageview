@@ -29,7 +29,7 @@ class DeletePhotoTest extends TestCase
     /** @test */
     public function unauthorized_ajax_request_cannot_delete_photo_from_album()
     {
-        $unauthorizedUser = factory(User::class)->create();
+        $unauthorizedUser = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 
@@ -43,7 +43,7 @@ class DeletePhotoTest extends TestCase
     /** @test */
     public function authorized_ajax_request_can_delete_photo_from_album()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create(['user_id' => $user->id]);
         $photo = factory(Photo::class)->create(['album_id' => $album->id]);
 

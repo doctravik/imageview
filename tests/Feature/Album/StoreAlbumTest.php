@@ -25,9 +25,22 @@ class StoreAlbumTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_store_album_without_name()
+    public function not_active_user_cannot_store_album()
     {
         $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post('/admin/albums', [
+            'name' => 'project'
+        ]);
+
+        $response->assertRedirect('/account/confirm');
+        $this->assertCount(0, Album::all());
+    }
+
+    /** @test */
+    public function it_cannot_store_album_without_name()
+    {
+        $user = factory(User::class)->create(['active' => true]);
 
         $response = $this->actingAs($user)->from('/admin/albums')->post('/admin/albums', [
             'name' => ''
@@ -42,7 +55,7 @@ class StoreAlbumTest extends TestCase
     /** @test */
     public function it_cannot_store_album_with_the_same_name()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create(['name' => 'project']);
 
         $response = $this->actingAs($user)->from('/admin/albums')->post('/admin/albums', [
@@ -57,7 +70,7 @@ class StoreAlbumTest extends TestCase
     /** @test */
     public function it_can_store_album()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['active' => true]);
 
         $response = $this->actingAs($user)->post('/admin/albums', [
             'name' => 'project'
