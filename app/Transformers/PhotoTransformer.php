@@ -30,7 +30,8 @@ class PhotoTransformer extends TransformerAbstract
             'link' => $photo->link,
             'description' => $photo->description,
             'is_public' => (bool) $photo->is_public,
-            'is_avatar' => (bool) $photo->is_avatar
+            'is_avatar' => (bool) $photo->is_avatar,
+            'sort_order' => (int) $photo->sort_order
         ];
     }
 

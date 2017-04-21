@@ -125,4 +125,19 @@ class Photo extends Model
 
         return $this;
     }
+
+    /**
+     * Set photo order.
+     * 
+     * @param int $order
+     * @return void
+     */
+    public function setOrder($order)
+    {
+        $this->timestamps = false;
+        
+        $this->sort_order = $order;
+        
+        $this->save();
+    }
 }

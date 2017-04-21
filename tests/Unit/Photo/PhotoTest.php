@@ -106,4 +106,14 @@ class PhotoTest extends TestCase
         $this->assertFalse($photoTwo->fresh()->isAvatar());
         $this->assertTrue($photoThree->fresh()->isAvatar());
     }
+
+    /** @test */
+    public function photo_can_set_new_order()
+    {
+        $photo = factory(Photo::class)->create(['sort_order' => 1]);
+
+        $photo->setOrder(2);
+
+        $this->assertEquals(2, $photo->fresh()->sort_order);
+    }
 }

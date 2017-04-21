@@ -31,6 +31,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
 Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi',  'middleware' => 'admin'], function() {
     Route::get('/albums/{album}/photos', 'PhotoController@index');
     Route::post('/albums/{album}/photos', 'PhotoController@store');
+    Route::patch('/albums/{album}/photos/sorting', 'SortPhotos')->name('photos.sort');
     
     Route::patch('/photos/{photo}', 'PhotoController@update');
     Route::delete('/photos/{photo}', 'PhotoController@destroy');

@@ -23,6 +23,18 @@ class AlbumPolicy
     }
 
     /**
+     * Determine if the given album can be updated by the user.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Album  $album
+     * @return bool
+     */
+    public function update(User $user, Album $album)
+    {
+        return $user->isOwnerOf($album);
+    }
+
+    /**
      * Determine if the given album can be deleted by the user.
      *
      * @param  \App\User  $user

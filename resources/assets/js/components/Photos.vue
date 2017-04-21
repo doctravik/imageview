@@ -1,19 +1,22 @@
 <template>
     <div>
-        <div class="columns is-multiline">
+        <draggable class="columns is-multiline" v-model="photos" :options="{}"  @change="sort"
+            @start="drag=true" @end="drag=false">
             <div class="column is-4 has-text-centered" v-for="photo in photos">
                 <thumbnail :photo="photo" size="small" 
                     @activate-thumbnail="showModal"
-                    @photo-was-deleted="deletePhoto"
-                    @reset-avatars='resetAvatars'>
+                    @delete-photo="deletePhoto"
+                    @reset-avatars="resetAvatars">
                 </thumbnail>
             </div>
-        </div>
+        </draggable>
         <modal :album="album" :photos="photos" :current-photo="currentPhoto"></modal>
     </div>
 </template>
 
 <script>
+    import Draggable from 'vuedraggable';
+
     export default {
         props: ['album'],
 
@@ -30,6 +33,29 @@
         },
 
         methods: {
+            /**
+             * Sort photos by order.
+             * 
+             * @return {void}
+             */
+            sort() {
+                this.photos.map((photo, index) => {
+                    photo.sort_order = index + 1;
+                });
+                this.updateServerOrder();
+            },
+
+            /**
+             * Update photos order in db.
+             * 
+             * @return {void}
+             */
+            updateServerOrder() {
+                axios.patch('/webapi/albums/' + this.album.slug + '/photos/sorting', {
+                    photos: this.photos
+                });
+            },
+
             /**
              * Show gallery modal.
              * 
@@ -94,6 +120,8 @@
                     }
                 });
             }
-        }
+        },
+
+        components: { Draggable }
     }
 </script>

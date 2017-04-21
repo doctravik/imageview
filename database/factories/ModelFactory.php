@@ -36,7 +36,8 @@ $factory->define(App\Photo::class, function (Faker\Generator $faker) {
         'link' => null,
         'description' => null,
         'is_public' => false,
-        'is_avatar' => false
+        'is_avatar' => false,
+        'sort_order' => 0
     ];
 });
 

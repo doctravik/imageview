@@ -18,6 +18,7 @@ class CreatePhotosTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('path');
+            $table->integer('sort_order')->unsigned()->default(0);
             $table->string('link')->nullable();
             $table->string('description')->nullable();
             $table->integer('album_id')->unsigned()->nullable();

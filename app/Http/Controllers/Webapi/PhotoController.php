@@ -23,7 +23,7 @@ class PhotoController extends Controller
     {
         $this->authorize('index', [Photo::class, $album]);
 
-        $photos = $album->photos;
+        $photos = $album->photos()->orderBy('sort_order', 'asc')->get();
 
         return fractal()
             ->collection($photos)
