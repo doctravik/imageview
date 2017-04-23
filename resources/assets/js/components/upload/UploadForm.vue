@@ -19,7 +19,7 @@
 
             <statistics :total="files.length" v-if="!state.isInitial()"></statistics>
 
-            <file v-for="file in files" 
+            <file v-for="file in files" :key="file.name"
                 :file="file"
                 :input-name="fileInputName"
                 :endpoint="endpoint">    
