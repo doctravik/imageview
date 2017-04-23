@@ -28,7 +28,7 @@ class RankingPhotosTest extends TestCase
 
     /** @test */
     public function unauthorized_user_cant_sort_photos()
-    {
+    {   
         $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
 

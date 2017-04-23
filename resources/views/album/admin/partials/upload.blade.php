@@ -9,4 +9,3 @@
 @endif
 
 <upload-form :album="{{ $album }}"></upload-form>
-<hr>

@@ -103,10 +103,13 @@
              * @return {void}
              */
             drop(e) {
-                if(this.state.isInitial()) {
-                    this.leave();
-                    this.addFiles(e.dataTransfer.files);
+                let files = e.dataTransfer.files;
+                
+                if(this.state.isInitial() && files.length) {
+                    this.addFiles(files);
                 }
+
+                this.leave();
             },
 
             /**

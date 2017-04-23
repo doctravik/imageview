@@ -1,8 +1,9 @@
-<nav class="nav has-shadow">
-    <div class="container">
+
+<div class="container">
+    <nav class="nav">
         <div class="nav-left">
             <a class="nav-item" href="{{ url('/') }}">
-                {{-- <img src="{{ Storage::url('images/logo.png') }}" class="image is-32x32" alt="CoffeeFun logo"> --}}
+                <img src="{{ Storage::url('images/camera-1294081.svg') }}" class="image is-32x32" alt="Logo">
                 <h3 class="title is-3">&nbsp; Imageview</h3>
             </a>
         </div>
@@ -26,5 +27,5 @@
                     </form>
             @endif
         </div>
-    </div>
-</nav>
+    </nav>
+</div>

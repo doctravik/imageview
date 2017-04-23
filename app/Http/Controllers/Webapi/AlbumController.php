@@ -17,7 +17,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums = Album::latest()->paginate(1);
+        $albums = Album::latest()->paginate(9);
 
         return fractal()
             ->collection($albums->getCollection())

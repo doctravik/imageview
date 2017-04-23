@@ -12,7 +12,7 @@
                 <div class="album__count">{{ pluralize('photo', count, true) }}</div>
             </div>
         </div>
-        <div class="album__name">{{ album.name }}</div>
+        <div class="album__name">{{ capitalize(album.name) }}</div>
         <div class="album__user">{{ user }}</div>
     </div>
 </template>
@@ -20,6 +20,7 @@
 <script>
     import pluralize from 'pluralize';
     import Thumbnail from './../mixins/Thumbnail.js';
+    import { capitalize } from './../../utilities/Helpers.js';
 
     export default {
         props: ['album', 'count', 'user'],
@@ -40,7 +41,7 @@
                 this.$emit('activate-thumbnail', this.photo);
             },
 
-            pluralize,
+            pluralize, capitalize
         },
 
         mixins: [Thumbnail],

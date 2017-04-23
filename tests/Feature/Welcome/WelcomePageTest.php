@@ -14,6 +14,6 @@ class WelcomePageTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertViewHas('albums');
+        $response->assertStatus(200);
     }
 }

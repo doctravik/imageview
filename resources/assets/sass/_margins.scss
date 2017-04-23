@@ -1,0 +1,11 @@
+$directions: ('top', 'right', 'bottom', 'left');
+
+@for $i from 0 through 3 {
+    @each $direction in $directions {
+        .margin-#{$direction}-#{$i} { padding-#{$direction}: 1em * $i; }
+        .padding-#{$direction}-#{$i} { margin-#{$direction}: 1em * $i; }
+    }
+
+    .padding-#{$i} { padding: 1em * $i; }
+    .margin-#{$i} { padding: 1em * $i; }
+}

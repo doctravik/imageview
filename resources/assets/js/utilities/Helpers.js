@@ -8,4 +8,14 @@ function url(path) {
     return Laravel.storage + path;
 }
 
-export { url };
+/**
+* Capitalize first letter.
+* 
+* @param  {string} text
+* @return {string}
+*/
+function capitalize(text) {
+    return text[0].toUpperCase() + text.slice(1);
+}
+
+export { url, capitalize };

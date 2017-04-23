@@ -21,7 +21,7 @@ class PhotoController extends Controller
      */
     public function index(Album $album)
     {
-        $this->authorize('index', [Photo::class, $album]);
+        $this->authorize('show', $album);
 
         $photos = $album->photos()->orderBy('sort_order', 'asc')->get();
 
