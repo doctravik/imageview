@@ -9,7 +9,7 @@
                     </a> 
                 </div>
 
-                <div class="gallery__viewport">
+                <div class="gallery__viewport" v-if="isActive">
                     <img :src="getCurrentUrl()" class="gallery__image">
                 </div>
 

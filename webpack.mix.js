@@ -14,4 +14,11 @@ const { mix } = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
-    .options({ purifyCss: true });
+    .extract([
+        'vue', 'vuedraggable', 'axios', 'pluralize'
+    ]);
+
+if (mix.config.inProduction) {
+    mix.version();
+    mix.options({ purifyCss: true });
+}
