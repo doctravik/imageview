@@ -27,7 +27,8 @@ class AlbumTransformer extends TransformerAbstract
         return [
             'id' => (int) $album->id,
             'name' => $album->name,
-            'slug' => $album->slug
+            'slug' => $album->slug,
+            'public' => (bool) $album->public
         ];
     }
 

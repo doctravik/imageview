@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model
 {
-    protected $fillable = ['name', 'user_id'];
+    protected $fillable = ['name', 'user_id', 'public'];
 
     /**
      * Get url.
@@ -89,5 +89,15 @@ class Album extends Model
     public function resetAvatars()
     {
         $res = \DB::table('photos')->where('album_id', $this->id)->update(['is_avatar' => false]);
+    }
+
+    /**
+     * Check if the album is active.
+     * 
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->public;
     }
 }

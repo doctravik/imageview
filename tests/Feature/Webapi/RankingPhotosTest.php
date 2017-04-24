@@ -47,7 +47,7 @@ class RankingPhotosTest extends TestCase
 
         $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->id}/photos/sorting");
 
-        $response->assertRedirect('/account/confirm');
+        $response->assertStatus(403);
     }
 
     /** @test */

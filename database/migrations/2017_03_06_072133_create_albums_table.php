@@ -18,6 +18,7 @@ class CreateAlbumsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->integer('user_id')->unsigned();
+            $table->boolean('public')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

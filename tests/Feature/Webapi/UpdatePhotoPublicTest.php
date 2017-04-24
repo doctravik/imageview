@@ -54,7 +54,7 @@ class UpdatePhotoPublicTest extends TestCase
             'is_public' => true
         ]);
 
-        $response->assertRedirect('/account/confirm');
+        $response->assertStatus(403);
         $this->assertFalse($photo->fresh()->isPublic());
     }
 

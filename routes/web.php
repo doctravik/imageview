@@ -23,12 +23,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::get('/albums', 'AlbumController@index')->name('admin.album.index');
     Route::get('/albums/{slug}', 'AlbumController@show')->name('admin.albums.show');
     Route::post('/albums', 'AlbumController@store')->name('admin.album.store');
+    Route::patch('/albums/{album}', 'AlbumController@update')->name('admin.album.update');
     Route::delete('/albums/{slug}', 'AlbumController@destroy')->name('admin.album.destroy');
     
     Route::post('/albums/{slug}/photos', 'PhotoController@store')->name('albums.photos.store');
 });
 
 Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi',  'middleware' => 'admin'], function() {
+    Route::patch('/albums/{album}', 'AlbumController@update');
+
     Route::get('/albums/{album}/photos', 'PhotoController@index');
     Route::post('/albums/{album}/photos', 'PhotoController@store');
     Route::patch('/albums/{album}/photos/sorting', 'SortPhotos')->name('photos.sort');

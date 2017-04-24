@@ -6,6 +6,7 @@ use App\Album;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAlbumRequest;
+use App\Http\Requests\UpdateAlbumRequest;
 
 class AlbumController extends Controller
 {
@@ -36,6 +37,23 @@ class AlbumController extends Controller
     {
         auth()->user()->albums()->create([
             'name' => request('name')
+        ]);
+
+        return redirect('/admin/albums');
+    }
+
+    /**
+     * Update album in db.
+     * 
+     * @param  Album  $album
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateAlbumRequest $request, Album $album)
+    {
+        $this->authorize('update', $album);
+        
+        $album->update([
+            'public' => (bool) request('public', false)
         ]);
 
         return redirect('/admin/albums');

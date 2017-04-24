@@ -44,8 +44,9 @@ $factory->define(App\Photo::class, function (Faker\Generator $faker) {
 $factory->define(App\Album::class, function (Faker\Generator $faker) {
 
     return [
+        'public' => false,
         'name' => $faker->unique()->word,
-        'user_id' => factory(App\User::class)->create()->id
+        'user_id' => factory(App\User::class)->create()->id,
     ];
 });
 

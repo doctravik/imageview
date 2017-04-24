@@ -60,6 +60,6 @@ class GetAlbumPhotosTest extends TestCase
 
         $response = $this->actingAs($authorizedUser)->json('get', "/webapi/albums/{$album->id}/photos");
 
-        $response->assertRedirect('/account/confirm');
+        $response->assertStatus(403);
     }
 }

@@ -16,6 +16,10 @@ class Admin
     public function handle($request, Closure $next)
     {
         if(auth()->check() && !auth()->user()->isActive()) {
+            if ($request->expectsJson()) {
+                return response()->json(['Request is unauthorized'], 403);
+            }
+
             return redirect('/account/confirm');
         }
         return $next($request);
