@@ -23,7 +23,7 @@ class GetAlbumPhotosTest extends TestCase
         $notOwnPhoto = factory(Photo::class)->create(['album_id' => $notOwnAlbum->id]);
         $ownPhoto = factory(Photo::class)->create(['album_id' => $ownAlbum->id]);
 
-        $response = $this->actingAs($user)->json('get', "/webapi/albums/{$ownAlbum->slug}/photos");
+        $response = $this->actingAs($user)->json('get', "/webapi/albums/{$ownAlbum->id}/photos");
 
         $response->assertStatus(200);
         $response->assertExactJson(['data' => [
@@ -36,7 +36,7 @@ class GetAlbumPhotosTest extends TestCase
     {
         $album = factory(Album::class)->create();
 
-        $response = $this->json('get', "/webapi/albums/{$album->slug}/photos");
+        $response = $this->json('get', "/webapi/albums/{$album->id}/photos");
 
         $response->assertStatus(403);
     }
@@ -47,7 +47,7 @@ class GetAlbumPhotosTest extends TestCase
         $unauthorizedUser = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
 
-        $response = $this->actingAs($unauthorizedUser)->json('get', "/webapi/albums/{$album->slug}/photos");
+        $response = $this->actingAs($unauthorizedUser)->json('get', "/webapi/albums/{$album->id}/photos");
 
         $response->assertStatus(403);
     }
@@ -58,7 +58,7 @@ class GetAlbumPhotosTest extends TestCase
         $authorizedUser = factory(User::class)->create(['active' => false]);
         $album = factory(Album::class)->create();
 
-        $response = $this->actingAs($authorizedUser)->json('get', "/webapi/albums/{$album->slug}/photos");
+        $response = $this->actingAs($authorizedUser)->json('get', "/webapi/albums/{$album->id}/photos");
 
         $response->assertRedirect('/account/confirm');
     }

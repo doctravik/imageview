@@ -51,7 +51,7 @@
              * @return {void}
              */
             updateServerOrder() {
-                axios.patch('/webapi/albums/' + this.album.slug + '/photos/sorting', {
+                axios.patch('/webapi/albums/' + this.album.id + '/photos/sorting', {
                     photos: this.photos
                 });
             },
@@ -73,7 +73,7 @@
              * @return {Promise}
              */
             fetchPhotos() {
-                axios.get('/webapi/albums/' + this.album.slug + '/photos')
+                axios.get('/webapi/albums/' + this.album.id + '/photos')
                     .then(response => {
                         this.photos = response.data.data;
                     });

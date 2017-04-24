@@ -24,7 +24,7 @@ class UploadSinglePhotoTest extends TestCase
         $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->json('post', "/webapi/albums/{$album->slug}/photos", [
+        $response = $this->actingAs($user)->json('post', "/webapi/albums/{$album->id}/photos", [
             'photo' => UploadedFile::fake()->image('photo1.jpg', 900, 600)
         ]);
 
@@ -45,7 +45,7 @@ class UploadSinglePhotoTest extends TestCase
     {
         $album = factory(Album::class)->create();
         
-        $response = $this->json('post', "/webapi/albums/{$album->slug}/photos", [
+        $response = $this->json('post', "/webapi/albums/{$album->id}/photos", [
             'photo' => UploadedFile::fake()->image('photo1.jpg', 900, 600)
         ]);
 
@@ -60,7 +60,7 @@ class UploadSinglePhotoTest extends TestCase
         $unauthorizedUser = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
 
-        $response = $this->actingAs($unauthorizedUser)->json('post', "/webapi/albums/{$album->slug}/photos", [
+        $response = $this->actingAs($unauthorizedUser)->json('post', "/webapi/albums/{$album->id}/photos", [
             'photo' => UploadedFile::fake()->image('photo1.jpg', 900, 600)
         ]);
 

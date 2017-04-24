@@ -11,6 +11,18 @@ class AlbumPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine if the use can store photos to the given album
+     *
+     * @param  \App\User  $user
+     * @param  \App\Album  $album
+     * @return bool
+     */
+    public function store(User $user, Album $album)
+    {
+        return $user->id === $album->user_id;
+    }
+
+    /**
      * Determine if the given album can be viewed by the user.
      *
      * @param  \App\User  $user

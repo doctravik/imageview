@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $album->name)
 @section('content')
-    @can('store', [App\Photo::class, $album])
+    @can('store', $album)
         <div class="columns">
             <div class="column is-12">
                 @include('album.admin.partials.upload')

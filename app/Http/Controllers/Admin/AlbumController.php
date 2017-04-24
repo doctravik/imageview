@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Album;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAlbumRequest;
 
 class AlbumController extends Controller
 {
@@ -31,12 +32,8 @@ class AlbumController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAlbumRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:albums,name'
-        ]);
-
         auth()->user()->albums()->create([
             'name' => request('name')
         ]);
@@ -47,11 +44,13 @@ class AlbumController extends Controller
     /**
      * Show photos from album.
      * 
-     * @param  Album  $album
+     * @param  string $albumSlug
      * @return \Illuminate\Http\Response
      */
-    public function show(Album $album)
+    public function show($albumSlug)
     {
+        $album = auth()->user()->findAlbumBySlug($albumSlug);
+
         $this->authorize('show', $album);
 
         return view('album.admin.show', compact('album'));
@@ -60,11 +59,13 @@ class AlbumController extends Controller
     /**
      * Delete album from database.
      * 
-     * @param  \App\Album  $album
+     * @param  string  $albumSlug
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Album $album)
+    public function destroy($albumSlug)
     {
+        $album = auth()->user()->findAlbumBySlug($albumSlug);
+
         $this->authorize('delete', $album);
         
         $album->delete();

@@ -43,31 +43,6 @@ class ViewAlbumsTest extends TestCase
     }
 
     /** @test */
-    public function authenticated_user_can_see_single_album()
-    {
-        $album = factory(Album::class)->create();
-        $user = factory(User::class)->create();
-
-        $response = $this->actingAs($user)->get("/albums/{$album->slug}");
-
-        $response->assertStatus(200);
-        $response->assertViewHas('album');
-        $response->assertSee($album->name);
-    }
-
-    /** @test */
-    public function unauthenticated_user_can_see_single_album()
-    {
-        $album = factory(Album::class)->create();
-
-        $response = $this->get("/albums/{$album->slug}");
-
-        $response->assertStatus(200);
-        $response->assertViewHas('album');
-        $response->assertSee($album->name);
-    }
-
-    /** @test */
     public function unauthenticated_user_cannot_view_admin_album()
     {
         $album = factory(Album::class)->create();
@@ -88,7 +63,10 @@ class ViewAlbumsTest extends TestCase
         $response->assertRedirect('/account/confirm');
     }
 
-    /** @test */
+    /** 
+     * @test
+     * @exception \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function unauthorized_user_cannot_view_admin_album()
     {
         $unauthorizedUser = factory(User::class)->create(['active' => true]);
@@ -96,7 +74,7 @@ class ViewAlbumsTest extends TestCase
 
         $response = $this->actingAs($unauthorizedUser)->get("/admin/albums/{$album->slug}");
 
-        $response->assertStatus(403);
+        $response->assertStatus(404);
     }
 
     /** @test */

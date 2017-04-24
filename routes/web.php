@@ -21,11 +21,11 @@ Route::get('/home', 'Admin\AlbumController@index')->name('home')->middleware('ad
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
     Route::get('/albums', 'AlbumController@index')->name('admin.album.index');
-    Route::get('/albums/{album}', 'AlbumController@show')->name('admin.albums.show');
+    Route::get('/albums/{slug}', 'AlbumController@show')->name('admin.albums.show');
     Route::post('/albums', 'AlbumController@store')->name('admin.album.store');
-    Route::delete('/albums/{album}', 'AlbumController@destroy')->name('admin.album.destroy');
+    Route::delete('/albums/{slug}', 'AlbumController@destroy')->name('admin.album.destroy');
     
-    Route::post('/albums/{album}/photos', 'PhotoController@store')->name('albums.photos.store');
+    Route::post('/albums/{slug}/photos', 'PhotoController@store')->name('albums.photos.store');
 });
 
 Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi',  'middleware' => 'admin'], function() {

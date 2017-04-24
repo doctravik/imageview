@@ -22,7 +22,7 @@ class ValidateUploadSinglePhotoTest extends TestCase
         $user = factory(User::class)->create(['active' => true]);
         $this->actingAs($user);
         $this->album = factory(Album::class)->create(['user_id' => $user->id]);
-        $this->url = "/webapi/albums/{$this->album->slug}/photos";
+        $this->url = "/webapi/albums/{$this->album->id}/photos";
     }
 
     /** @test */

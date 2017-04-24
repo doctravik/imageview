@@ -43,7 +43,7 @@
                 isDraggedOver: false,
                 fileInputName: 'photo',
                 state: new State(['initial', 'uploading', 'done']),
-                endpoint: '/webapi/albums/' + this.album.slug + '/photos'
+                endpoint: '/webapi/albums/' + this.album.id + '/photos'
             }
         },
         

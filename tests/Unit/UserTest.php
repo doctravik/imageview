@@ -48,4 +48,27 @@ class UserTest extends TestCase
         $this->assertTrue($user->isOwnerOf($album));
         $this->assertFalse($user->isOwnerOf($anotherAlbum));
     }
+
+    /** @test */
+    public function user_can_find_own_album_by_slug()
+    {
+        $user = factory(User::class)->create();
+        $userAlbum = factory(Album::class)->create(['name' => 'nature', 'user_id' => $user->id]);
+        $anotherAlbum = factory(Album::class)->create(['name' => 'foods']);
+
+        $album = $user->findAlbumBySlug('nature');
+
+        $this->assertEquals($album->id, $userAlbum->id);
+    }
+
+    /** 
+     * @test
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function it_throw_exception_if_user_cant_find_own_album()
+    {
+        $user = factory(User::class)->create();
+
+        $album = $user->findAlbumBySlug('nature');
+    }
 }

@@ -19,12 +19,14 @@ class PhotoController extends Controller
     /**
      * Store photo in database.
      *  
-     * @param  StorePhotosRequest $request
+     * @param  string $albumSlug
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePhotosRequest $request, Album $album)
+    public function store(StorePhotosRequest $request, $albumSlug)
     {
-        $this->authorize('store', [Photo::class, $album]);
+        $album = auth()->user()->findAlbumBySlug($albumSlug);
+
+        $this->authorize('store', $album);
 
         foreach (request('photos') as $file) {
             $photo = Photo::upload($file, $album);

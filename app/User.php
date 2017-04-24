@@ -71,4 +71,15 @@ class User extends Authenticatable
     {
         return $this->id === $album->user_id;
     }
+
+    /**
+     * Find user's album by slug.
+     * 
+     * @param  string $slug
+     * @return Album
+     */
+    public function findAlbumBySlug($slug)
+    {
+        return $this->albums()->where('slug', $slug)->firstOrFail();
+    }
 }

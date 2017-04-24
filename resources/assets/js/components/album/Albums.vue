@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="columns is-multiline">
-            <div class="column is-4 has-text-centered" v-for="album in albums">
-                <album :album="album" v-if="album.publicPhotos.data.length"></album>
+            <div class="column is-4 has-text-centered" v-for="album in albums" v-if="album.publicPhotos.data.length">
+                <album :album="album"></album>
             </div>
         </div>
         <hr v-if="hasPaginator">

@@ -19,7 +19,7 @@ class RankingPhotosTest extends TestCase
     {
         $album = factory(Album::class)->create();
 
-        $response = $this->json('patch', "/webapi/albums/{$album->slug}/photos/sorting", [
+        $response = $this->json('patch', "/webapi/albums/{$album->id}/photos/sorting", [
             'photos' => [1, 2]
         ]);
 
@@ -32,7 +32,7 @@ class RankingPhotosTest extends TestCase
         $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create();
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/sorting", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->id}/photos/sorting", [
             'photos' => [1, 2]
         ]);
 
@@ -45,7 +45,7 @@ class RankingPhotosTest extends TestCase
         $user = factory(User::class)->create(['active' => false]);
         $album = factory(Album::class)->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/sorting");
+        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->id}/photos/sorting");
 
         $response->assertRedirect('/account/confirm');
     }
@@ -56,7 +56,7 @@ class RankingPhotosTest extends TestCase
         $user = factory(User::class)->create(['active' => true]);
         $album = factory(Album::class)->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/sorting", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->id}/photos/sorting", [
             'photos' => 'photos'
         ]);
 
@@ -74,7 +74,7 @@ class RankingPhotosTest extends TestCase
         $photoOne->sort_order = 2;
         $photoTwo->sort_order = 1;
 
-        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->slug}/photos/sorting", [
+        $response = $this->actingAs($user)->json('patch', "/webapi/albums/{$album->id}/photos/sorting", [
             'photos' => [$photoOne->toArray(), $photoTwo->toArray()]
         ]);
 

@@ -24,7 +24,10 @@ class DeleteAlbumTest extends TestCase
         $this->assertDatabaseHas('albums', $album->toArray());
     }
 
-    /** @test */
+    /** 
+     * @test
+     * @exception \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function unauthorized_user_can_not_delete_album()
     {
         $unauthorizedUser = factory(User::class)->create(['active' => true]);
@@ -32,7 +35,7 @@ class DeleteAlbumTest extends TestCase
 
         $response = $this->actingAs($unauthorizedUser)->delete("/admin/albums/{$album->slug}");
 
-        $response->assertStatus(403);
+        $response->assertStatus(404);
         $this->assertDatabaseHas('albums', $album->toArray());
     }
     

@@ -65,7 +65,10 @@ class UploadPhotosTest extends TestCase
         $this->assertCount(0, $this->storage->allFiles());
     }
 
-    /** @test */
+    /** 
+     * @test
+     * @exception \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function unauthorized_user_can_not_upload_photos()
     {
         $unauthorizedUser = factory(User::class)->create(['active' => true]);
@@ -75,7 +78,7 @@ class UploadPhotosTest extends TestCase
             'photos' => [UploadedFile::fake()->image('photo1.jpg')]
         ]);
 
-        $response->assertStatus(403);
+        $response->assertStatus(404);
         $this->assertCount(0, $photos = Photo::all());
         $this->assertCount(0, $this->storage->allFiles());
     }

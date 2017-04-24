@@ -11,16 +11,6 @@ class Album extends Model
     protected $fillable = ['name', 'user_id'];
 
     /**
-    * Get the route key for the model.
-    *
-    * @return string
-    */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-    /**
      * Get url.
      * 
      * @return string
@@ -71,8 +61,9 @@ class Album extends Model
     }
 
     /**
-     * Album
-     * @return [type] [description]
+     * Album has one avatar
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function avatar()
     {
