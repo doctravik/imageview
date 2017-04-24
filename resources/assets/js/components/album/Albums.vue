@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="columns is-multiline">
-            <div class="column is-4 has-text-centered" v-for="album in albums" v-if="album.publicPhotos.data.length">
+            <div class="column is-4 has-text-centered" v-for="album in albums" v-if="isVisible(album)">
                 <album :album="album"></album>
             </div>
         </div>
@@ -37,7 +37,7 @@
             /**
              * Get all of the albums from db.
              * 
-             * @return void
+             * @return {Void}
              */
             fetchAlbums() {
                 axios.get('/webapi/albums', { params: this.filters })
@@ -49,8 +49,8 @@
             /**
              * Parse response data.
              * 
-             * @param  {object} data
-             * @return {void}     
+             * @param  {Object} data
+             * @return {Void}     
              */
             parseData(data) {
                 this.paginator = FractalPaginator.make(data.meta.pagination);
@@ -60,14 +60,24 @@
             /**
              * Navigate through the pagination.
              * 
-             * @param  number page
-             * @return void
+             * @param  {Number} page
+             * @return {Void}
              */
             navigate(page) 
             {
                 this.filters['page'] = page;
                 this.fetchAlbums();
             },
+
+            /**
+             * Check if album is visible.
+             * 
+             * @param  {Object}  album
+             * @return {Boolean}
+             */
+            isVisible(album) {
+                return album.publicPhotos.data.length && album.public;
+            }
         },
 
         components: { Album }
