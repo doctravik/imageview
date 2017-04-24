@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Jobs\SendActivationToken;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -79,6 +80,8 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        dispatch(new SendActivationToken($user));
+        
         return redirect('/home')->with('status', 'Confirm your email please. Activation code was sent on your email.');
     }
 }

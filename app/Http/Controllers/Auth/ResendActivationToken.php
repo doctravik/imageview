@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Jobs\SendActivationToken;
 use App\Http\Controllers\Controller;
-use App\Events\UserRequestedActivationEmail;
 
 class ResendActivationToken extends Controller
 {
@@ -26,8 +26,8 @@ class ResendActivationToken extends Controller
             return redirect('/home');
         }
 
-        event(new UserRequestedActivationEmail($user));
-        
+        dispatch(new SendActivationToken($user));
+
         return back()->with('status', 'Activation token was resent to your email.');
     }
 }

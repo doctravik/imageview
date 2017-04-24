@@ -5,6 +5,8 @@ namespace Tests\Feature\ActivationToken;
 use App\User;
 use Tests\TestCase;
 use App\ActivationToken;
+use App\Jobs\SendActivationToken;
+use Illuminate\Support\Facades\Queue;
 use App\Notifications\ActivationTokenSent;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -91,12 +93,17 @@ class ActivationTokenTest extends TestCase
     {
         $user = factory(User::class)->create(['active' => true]);
 
-        $this->doesntExpectEvents(UserRequestedActivationEmail::class);
+        Notification::fake();
 
         $response = $this->actingAs($user)
             ->post('/activation/token/resend/' . $user->id);
 
         $response->assertRedirect('/home');
+        $response->assertSessionMissing('status', 'Activation token was resent to your email.');
+
+        Notification::assertNotSentTo(
+            [$user], ActivationTokenSent::class
+        );
     }
 
     /** @test */
@@ -104,8 +111,15 @@ class ActivationTokenTest extends TestCase
     {
         $user = factory(User::class)->create();
 
+        Notification::fake();
+
         $response = $this->post('/activation/token/resend/' . $user->id);
 
         $response->assertRedirect('/login');        
+        $response->assertSessionMissing('status', 'Activation token was resent to your email.');
+
+        Notification::assertNotSentTo(
+            [$user], ActivationTokenSent::class
+        );
     }
 }
