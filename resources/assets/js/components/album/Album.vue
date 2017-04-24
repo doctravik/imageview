@@ -1,10 +1,16 @@
 <template>
-    <album-thumbnail size="small" @activate-thumbnail="showModal"
-        :album="album"
-        :photo="avatar"
-        :user="username"
-        :count="count">
-    </album-thumbnail>
+    <div>
+        <album-thumbnail size="small" @activate-thumbnail="showModal"
+            :album="album"
+            :photo="avatar"
+            :user="username"
+            :count="count">
+        </album-thumbnail>
+        
+        <modal :album="album" :photos="album.publicPhotos.data" 
+            :current-photo="album.avatar ? album.avatar.data : null">
+        </modal>
+    </div>
 </template>
 
 <script>

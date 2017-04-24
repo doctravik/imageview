@@ -8,7 +8,7 @@
                 <div class="thumbnail__default-image--small" v-if="!url"><span>No avatar</span></div>
             </div>
 
-            <div class="thumbnail-menu album__menu">
+            <div class="thumbnail-menu album__menu" @click.prevent="activate">
                 <div class="album__count">{{ pluralize('photo', count, true) }}</div>
             </div>
         </div>

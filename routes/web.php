@@ -12,12 +12,12 @@
 */
 
 Route::get('/', 'WelcomeController@index')->name('welcome.index');
-
-Route::get('/photos/{photo}', 'PhotoController@show')->name('photos.show');
-
-Route::get('/albums/{album}', 'AlbumController@show')->name('albums.show');
-
 Route::get('/home', 'Admin\AlbumController@index')->name('home')->middleware('admin');
+
+// Route::get('/photos/{photo}', 'PhotoController@show')->name('photos.show');
+
+// Route::get('/albums/{album}', 'AlbumController@show')->name('albums.show');
+
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
     Route::get('/albums', 'AlbumController@index')->name('admin.album.index');
