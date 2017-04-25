@@ -44,7 +44,8 @@ class AlbumController extends Controller
 
     /**
      * Update album in db.
-     * 
+     *
+     * @param  UpdateAlbumRequest $request
      * @param  Album  $album
      * @return \Illuminate\Http\Response
      */

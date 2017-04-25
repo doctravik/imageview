@@ -11,6 +11,11 @@ class AccountController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Show confirm notification.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function confirm()
     {   
         $user = auth()->user();

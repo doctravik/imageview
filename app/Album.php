@@ -88,7 +88,7 @@ class Album extends Model
      */
     public function resetAvatars()
     {
-        $res = \DB::table('photos')->where('album_id', $this->id)->update(['is_avatar' => false]);
+        \DB::table('photos')->where('album_id', $this->id)->update(['is_avatar' => false]);
     }
 
     /**

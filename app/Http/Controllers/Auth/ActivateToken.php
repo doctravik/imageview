@@ -8,6 +8,12 @@ use App\Http\Controllers\Controller;
 
 class ActivateToken extends Controller
 {
+    /**
+     * Activate token.
+     * 
+     * @param  string $token
+     * @return \Illuminate\Http\Response
+     */
     public function __invoke($token)
     {
         $token = ActivationToken::whereToken($token)->firstOrFail();

@@ -181,7 +181,6 @@ return [
         
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Fractal\FractalServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
