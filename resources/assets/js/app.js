@@ -25,4 +25,11 @@ Vue.component('pagination', require('./components/pagination/Pagination.vue'));
 
 const app = new Vue({
     el: '#app',
+
+    methods: {
+        toggleNav() {
+            this.$refs.nav.classList.toggle('is-active');
+            this.$refs.toggleNav.classList.toggle('is-active');
+        }
+    }
 });
