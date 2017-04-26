@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/about', function() {
+    return view('about');
+})->name('about');
+
 Route::get('/', 'WelcomeController@index')->name('welcome.index');
 Route::get('/home', 'Admin\AlbumController@index')->name('home')->middleware('admin');
 

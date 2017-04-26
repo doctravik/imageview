@@ -11,6 +11,8 @@
         </span>
 
         <div class="nav-right nav-menu" ref="nav">
+            <a href="{{ url('/about') }}"
+                class="nav-item {{ $route == 'about' ? 'is-active' : '' }}">About</a>
             @if (Auth::guest())
                 <a href="{{ url('/register') }}"
                     class="nav-item {{ $route == 'register' ? 'is-active' : '' }}">Sign up</a>
