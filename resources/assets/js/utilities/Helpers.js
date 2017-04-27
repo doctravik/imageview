@@ -5,7 +5,7 @@
  * @return string
  */
 function url(path) {
-    return Laravel.storage + path;
+    return Laravel.storage.replace(/\/+$/, '/') + path;
 }
 
 /**
