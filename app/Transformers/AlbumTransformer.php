@@ -65,7 +65,8 @@ class AlbumTransformer extends TransformerAbstract
      */
     public function includePublicPhotos(Album $album)
     {
-        // dd($album->publicPhotos);
-        return $this->collection($album->publicPhotos, new PhotoTransformer);
+        $photos = $album->publicPhotos()->orderBy('sort_order', 'asc')->get();
+
+        return $this->collection($photos, new PhotoTransformer);
     }
 }

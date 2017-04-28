@@ -13,6 +13,7 @@
                     <li>set image and album as private or public</li>
                     <li>set avatar for the album</li>
                     <li>delete own images</li>
+                    <li>drag and drop sorting photos</li>
                 </ul>
                 <p><b>Guest can only view public albums with public photos.</b></p>
             </div>
