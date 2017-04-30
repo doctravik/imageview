@@ -43,6 +43,21 @@ class AlbumController extends Controller
     }
 
     /**
+     * Edit album.
+     * 
+     * @param  string  $albumSlug
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($albumSlug)
+    {
+        $album = auth()->user()->findAlbumBySlug($albumSlug);
+
+        $this->authorize('update', $album);
+
+        return view('album.admin.edit', compact('album'));
+    }
+
+    /**
      * Update album in db.
      *
      * @param  UpdateAlbumRequest $request
@@ -53,9 +68,7 @@ class AlbumController extends Controller
     {
         $this->authorize('update', $album);
         
-        $album->update([
-            'public' => (bool) request('public', false)
-        ]);
+        $album->update($request->intersectKeys(['name', 'public']));
 
         return redirect('/admin/albums');
     }

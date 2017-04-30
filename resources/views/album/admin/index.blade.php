@@ -27,6 +27,11 @@
                                         </form>
                                     </div>
                                     <div class="level-item">
+                                        <a href="{{ route('admin.album.edit', $album->slug) }}" class="button info">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="level-item">
                                         <form action="{{ route('admin.album.destroy', $album->slug) }}" method="POST">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}

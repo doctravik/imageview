@@ -8,7 +8,8 @@
                 <p><b>Site has client and admin sections.</b></p>
                 <p><b>Authenticated user can:</b></p>
                 <ul>
-                    <li>create albums</li>
+                    <li>create an album</li>
+                    <li>rename an album</li>
                     <li>upload images to the album</li>
                     <li>set image and album as private or public</li>
                     <li>set avatar for the album</li>

@@ -10,44 +10,46 @@
                     <form class="control" action="{{ url('/register') }}" method="POST">
                         {{ csrf_field() }}
 
-                        <label class="label">Name</label>
-                        <p class="control">
-                            <input class="input" type="text" name="name" placeholder="Name" value="{{ old('name') }}" >
-                            <span class="help is-danger">{{ $errors->first('name') }}</span>
-                        </p>
+                        <div class="field">
+                            <label class="label">Name</label>
+                            <p class="control">
+                                <input class="input" type="text" name="name" placeholder="Name" 
+                                    value="{{ old('name') }}" >
+                                <span class="help is-danger">{{ $errors->first('name') }}</span>
+                            </p>
+                        </div>
 
-                        <label class="label">Email</label>
-                        <p class="control">
-                            <input class="input" type="text" name="email" placeholder="Email" value="{{ old('email') }}">
-                            <span class="help is-danger">{{ $errors->first('email') }}</span>
-                        </p>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <p class="control">
+                                <input class="input" type="text" name="email" placeholder="Email" 
+                                    value="{{ old('email') }}">
+                                <span class="help is-danger">{{ $errors->first('email') }}</span>
+                            </p>
+                        </div>
 
-                        <label class="label">Password</label>
-                        <p class="control">
-                            <input class="input" type="password" name="password" placeholder="Password">
-                            <span class="help is-danger">{{ $errors->first('password') }}</span>
-                        </p>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <p class="control">
+                                <input class="input" type="password" name="password" placeholder="Password">
+                                <span class="help is-danger">{{ $errors->first('password') }}</span>
+                            </p>
+                        </div>
 
-                        <label class="label">Confirm Password</label>
-                        <p class="control">
-                            <input class="input" type="password" name="password_confirmation" 
-                                placeholder="Confirm password">
-                            <span class="help is-danger">{{ $errors->first('password_confirmation') }}</span>
-                        </p>
+                        <div class="field">
+                            <label class="label">Confirm Password</label>
+                            <p class="control">
+                                <input class="input" type="password" name="password_confirmation" 
+                                    placeholder="Confirm password">
+                                <span class="help is-danger">{{ $errors->first('password_confirmation') }}</span>
+                            </p>
+                        </div>
 
-                        <nav class="level is-marginless">
-                            <div class="level-left">
-                                <div class="level-item">
-                                    <button class="button is-success">Register</button>
-                                </div>
-                            </div>
-                            
-                            <div class="level-right">
-                                <p class="level-item">
-                                    <a href="{{ url('/password/reset') }}">Remind password</a>
-                                </p>
-                            </div>
-                        </nav>
+                        <div class="field">
+                            <p class="control">
+                                <button class="button is-success">Register</button>
+                            </p>
+                        </div>
                     </form>
                 </div>
             </nav>

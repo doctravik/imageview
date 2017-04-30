@@ -11,21 +11,35 @@
                     <form class="control" action="{{ url('/login') }}" method="POST">
                         {{ csrf_field() }}
 
-                        <label class="label">Email</label>
-                        <p class="control is-expanded">
-                            <input class="input" type="text" name="email" placeholder="Email" value="{{ old('email') }}">
-                            <span class="help is-danger">{{ $errors->first('email') }}</span>
-                        </p>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <p class="control is-expanded">
+                                <input class="input" type="text" name="email" placeholder="Email" 
+                                    value="{{ old('email') }}">
+                                <span class="help is-danger">{{ $errors->first('email') }}</span>
+                            </p>
+                        </div>
 
-                        <label class="label">Password</label>
-                        <p class="control is-expanded">
-                            <input class="input" type="password" name="password" placeholder="Password">
-                            <span class="help is-danger">{{ $errors->first('password') }}</span>
-                        </p>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <p class="control is-expanded">
+                                <input class="input" type="password" name="password" placeholder="Password">
+                                <span class="help is-danger">{{ $errors->first('password') }}</span>
+                            </p>
+                        </div>
 
-                        <p class="control">
-                            <button class="button is-success">Login</button>
-                        </p>
+                        <nav class="level is-marginless">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <button class="button is-success">Login</button>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <p class="level-item">
+                                    <a href="{{ url('/password/reset') }}">Remind password</a>
+                                </p>
+                            </div>
+                        </nav>
                     </form>
                 </div>
             </nav>
