@@ -3,31 +3,30 @@
         <div class="gallery__background"></div>
         <div class="gallery__wrapper">
             <div class="gallery__content">
-                <div class="gallery__arrow--column">
+                <div class="gallery__arrow--column gallery__arrow--left">
                     <a class="gallery__arrow has-text-centered" v-if="hasPrev()" @click.prevent="prev()">
                         <i class="fa fa-caret-left" aria-hidden="true"></i>
                     </a> 
                 </div>
 
-                <div class="gallery__viewport" v-if="isActive">
-                    <img :src="getCurrentUrl()" class="gallery__image">
-                </div>
+                <img  v-if="isActive" :src="getCurrentUrl()" class="gallery__image">
 
-                <div class="gallery__arrow--column">
+                <div class="gallery__arrow--column gallery__arrow--right">
                     <a class="gallery__arrow has-text-centered" v-if="hasNext()" @click.prevent="next()">
                         <i class="fa fa-caret-right" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
-        </div>
 
-        <slider @change-photo="setCurrentIndex"
-            :album="album" :photos="photos" :show-slider="showSlider">
-        </slider>
+            <slider @change-photo="setCurrentIndex"
+                :album="album" :photos="photos" :show-slider="showSlider">
+            </slider>
+        </div>
 
         <button class="modal-close" @click="close"></button>
 
-        <span class="gallery__close-slider" :title="showSlider ? 'Hide slider' : 'Show slider'" @click="toggleSlider">
+        <span class="gallery__close-slider" @click="toggleSlider"
+            :title="showSlider ? 'Hide slider' : 'Show slider'">
             <i class="fa" :class="[showSlider ? 'fa-toggle-on' : 'fa-toggle-off']" aria-hidden="true"></i>
         </span>
     </div>

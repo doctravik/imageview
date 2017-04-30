@@ -4,11 +4,12 @@
             <div class="slider__arrow slider__arrow--left" @click="prev()" v-if="slider.hasPrev()">
                 <i class="fa fa-caret-left" aria-hidden="true"></i>
             </div>
-            <div v-for="photo in sliderPhotos">
-                <div :class="['slider__item', {'slider__item--active' : isActive(photo.id)}]">
-                    <slider-thumbnail :photo="photo" size="small" @activate-thumbnail="selectPhoto"></slider-thumbnail>
-                </div>
+
+            <div v-for="photo in sliderPhotos" 
+                :class="['slider__item', {'slider__item--active' : isActive(photo.id)}]">
+                <slider-thumbnail :photo="photo" size="small" @activate-thumbnail="selectPhoto"></slider-thumbnail>
             </div>
+
             <div class="slider__arrow slider__arrow--right" @click="next()" v-if="slider.hasNext()">
                 <i class="fa fa-caret-right" aria-hidden="true"></i>
             </div>
