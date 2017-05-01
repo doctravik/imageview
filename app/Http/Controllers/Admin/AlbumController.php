@@ -67,8 +67,12 @@ class AlbumController extends Controller
     public function update(UpdateAlbumRequest $request, Album $album)
     {
         $this->authorize('update', $album);
-        
-        $album->update($request->intersectKeys(['name', 'public']));
+
+        if ($request->exists('name')) {
+            $album->update(['name' => request('name')]);
+        } else {
+            $album->update(['public' => request('public', false)]);
+        }
 
         return redirect('/admin/albums');
     }

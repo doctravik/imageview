@@ -20,7 +20,8 @@
                                             <div class="field">
                                                 <p class="control">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" name="public" {{ $album->isPublic() ? 'checked' : '' }} onchange="this.form.submit()">public
+                                                        <input type="checkbox" name="public" {{ $album->isPublic() ? 'checked' : '' }}
+                                                            onchange="this.form.submit()">public
                                                     </label>
                                                 </p>
                                             </div>
