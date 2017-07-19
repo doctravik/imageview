@@ -12,7 +12,14 @@ class AlbumObserver
     }
 
     public function updating(Album $album)
-    {   
+    {
         $album->slug = str_slug($album->name);
+    }
+
+    public function deleting(Album $album)
+    {
+        $album->photos->each(function ($photo) {
+            $photo->delete();
+        });
     }
 }

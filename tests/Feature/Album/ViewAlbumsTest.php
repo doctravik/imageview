@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class ViewAlbumsTest extends TestCase
 {
     use DatabaseTransactions;
-    
+
     /** @test */
     public function authenticated_user_can_see_all_albums()
     {
@@ -63,7 +63,7 @@ class ViewAlbumsTest extends TestCase
         $response->assertRedirect('/account/confirm');
     }
 
-    /** 
+    /**
      * @test
      * @exception \Illuminate\Database\Eloquent\ModelNotFoundException
      */

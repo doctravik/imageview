@@ -16,8 +16,8 @@ class AlbumController extends Controller
     }
 
     /**
-     * Show all albums of the user.
-     * 
+     * Show all albums of the user (dashboard).
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -44,7 +44,7 @@ class AlbumController extends Controller
 
     /**
      * Edit album.
-     * 
+     *
      * @param  string  $albumSlug
      * @return \Illuminate\Http\Response
      */
@@ -79,7 +79,7 @@ class AlbumController extends Controller
 
     /**
      * Show photos from album.
-     * 
+     *
      * @param  string $albumSlug
      * @return \Illuminate\Http\Response
      */
@@ -94,7 +94,7 @@ class AlbumController extends Controller
 
     /**
      * Delete album from database.
-     * 
+     *
      * @param  string  $albumSlug
      * @return \Illuminate\Http\Response
      */
@@ -103,7 +103,7 @@ class AlbumController extends Controller
         $album = auth()->user()->findAlbumBySlug($albumSlug);
 
         $this->authorize('delete', $album);
-        
+
         $album->delete();
 
         return redirect('/admin/albums');

@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class UploadSinglePhotoTest extends TestCase
+class UploadPhotoTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -44,7 +44,7 @@ class UploadSinglePhotoTest extends TestCase
     public function unauthenticated_user_can_not_upload_single_photo()
     {
         $album = factory(Album::class)->create();
-        
+
         $response = $this->json('post', "/webapi/albums/{$album->id}/photos", [
             'photo' => UploadedFile::fake()->image('photo1.jpg', 900, 600)
         ]);
